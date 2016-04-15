@@ -1,0 +1,29 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  hosts: test-kitchen
+  name: ansible_playbook
+  require_chef_for_busser: false
+  require_ruby_for_busser: false
+  ansible_verbosity: 1
+  ansible_verbose: true
+
+platforms:
+  - name: freebsd-10.2-amd64
+    driver:
+      box: trombik/ansible-freebsd-10.3-amd64
+      box_check_update: false
+    driver_config:
+      ssh:
+        shell: '/bin/sh'
+
+suites:
+  - name: default
+    provisioner:
+      name: ansible_playbook
+      playbook: test/integration/default.yml
+    verifier:
+      name: shell
+      command: rspec -c -f d -I spec/serverspec spec/serverspec/default_spec.rb

@@ -1,0 +1,7 @@
+---
+# defaults file for ansible-role-fluentd
+fluentd_config_dir: "{{ __fluentd_config_dir }}"
+fluentd_config_path: "{{ __fluentd_config_path }}"
+fluentd_service_name: fluentd
+fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
+fluentd_plugins_to_install: []

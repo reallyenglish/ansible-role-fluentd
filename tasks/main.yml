@@ -1,0 +1,32 @@
+---
+# tasks file for ansible-role-fluentd
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: install-FreeBSD.yml
+  when: ansible_os_family == 'FreeBSD'
+
+- name: Ensure fluentd.conf.d exists
+  file:
+    path: "{{ fluentd_config_dir }}"
+    state: directory
+    mode: 755
+
+#- include: configure-leaf.yml
+
+#- include: configure-forwarder.yml
+
+- command: "{{ fluentd_gem_bin }} install {{ item }}"
+  with_items: "{{ fluentd_plugins_to_install }}"
+
+- name: Create fluent.conf
+  template:
+    src: fluent.conf.j2
+    dest: "{{ fluentd_config_path }}"
+  notify: Restart fluentd
+
+- name: Start fluentd
+  service:
+    name: "{{ fluentd_service_name }}"
+    enabled: true
+    state: started
