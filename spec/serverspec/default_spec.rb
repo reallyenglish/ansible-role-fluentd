@@ -28,6 +28,7 @@ end
 
 describe file(fluentd_config_dir) do
   it { should be_directory }
+  it { should be_mode 755 }
 end
 
 describe service(fluentd_service_name) do
