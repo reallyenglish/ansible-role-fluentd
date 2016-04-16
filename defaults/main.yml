@@ -7,3 +7,5 @@ fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
 fluentd_plugins_to_install: []
 fluentd_certs_dir: "{{ __fluentd_certs_dir }}"
 fluentd_configs: {}
+fluentd_ca_key:
+fluentd_ca_cert:

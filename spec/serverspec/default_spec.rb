@@ -54,3 +54,15 @@ describe file(fluentd_certs_dir) do
   it { should be_directory }
   it { should be_mode 755 }
 end
+
+describe file("#{fluentd_certs_dir}/ca_key.pem") do
+  it { should be_file }
+  its(:content) { should match Regexp.escape('eUVHk/0/haiey+uTvUVjLMG1uKqXEKzqbhuna3k+dPuOTOYPPrAArNfVgXS3K+rV') }
+  it { should be_mode 440 }
+end
+
+describe file("#{fluentd_certs_dir}/ca_cert.pem") do
+  it { should be_file }
+  its(:content) { should match /MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV/ }
+  it { should be_mode 644 }
+end

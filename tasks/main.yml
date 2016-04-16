@@ -17,6 +17,20 @@
     state: directory
     mode: 0755
 
+- name: Install ca_cert.pem
+  template:
+    src: ca_cert.pem.j2
+    dest: "{{ fluentd_certs_dir }}/ca_cert.pem"
+    mode: 0644
+  when: fluentd_ca_cert
+
+- name: Install ca_key.pem
+  template:
+    src: ca_key.pem.j2
+    dest: "{{ fluentd_certs_dir }}/ca_key.pem"
+    mode: 0440
+  when: fluentd_ca_key
+
 #- include: configure-leaf.yml
 
 #- include: configure-forwarder.yml
