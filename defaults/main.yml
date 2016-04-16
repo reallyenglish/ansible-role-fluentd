@@ -1,5 +1,7 @@
 ---
 # defaults file for ansible-role-fluentd
+fluentd_user: fluentd
+fluentd_group: fluentd
 fluentd_config_dir: "{{ __fluentd_config_dir }}"
 fluentd_config_path: "{{ __fluentd_config_path }}"
 fluentd_service_name: fluentd

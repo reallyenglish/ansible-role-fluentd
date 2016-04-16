@@ -22,6 +22,8 @@
     src: ca_cert.pem.j2
     dest: "{{ fluentd_certs_dir }}/ca_cert.pem"
     mode: 0644
+    owner: "{{ fluentd_user }}"
+    group: "{{ fluentd_group }}"
   when: fluentd_ca_cert
 
 - name: Install ca_key.pem
@@ -29,6 +31,8 @@
     src: ca_key.pem.j2
     dest: "{{ fluentd_certs_dir }}/ca_key.pem"
     mode: 0440
+    owner: "{{ fluentd_user }}"
+    group: "{{ fluentd_group }}"
   when: fluentd_ca_key
 
 #- include: configure-leaf.yml

@@ -16,8 +16,6 @@ when 'freebsd'
   fluentd_service_name = 'fluentd'
   fluentd_config_path  = '/usr/local/etc/fluentd/fluent.conf'
   fluentd_config_dir   = '/usr/local/etc/fluentd/conf.d'
-  fluentd_user_name    = 'root'
-  fluentd_user_group   = 'wheel'
   fluent_gem_bin       = '/usr/local/bin/fluent-gem'
   fluentd_certs_dir    = '/usr/local/etc/fluentd/certs'
 end
@@ -59,10 +57,14 @@ describe file("#{fluentd_certs_dir}/ca_key.pem") do
   it { should be_file }
   its(:content) { should match Regexp.escape('eUVHk/0/haiey+uTvUVjLMG1uKqXEKzqbhuna3k+dPuOTOYPPrAArNfVgXS3K+rV') }
   it { should be_mode 440 }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
 end
 
 describe file("#{fluentd_certs_dir}/ca_cert.pem") do
   it { should be_file }
   its(:content) { should match /MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV/ }
   it { should be_mode 644 }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
 end
