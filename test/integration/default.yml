@@ -6,3 +6,20 @@
     fluentd_plugins_to_install:
       - fluent-plugin-redis
       - fluent-plugin-secure-forward
+    fluentd_configs:
+      listen_on_5140:
+        enabled: true
+        config: |
+          <source>
+            @type syslog
+            port 5140
+            bind 127.0.0.1
+            tag syslog
+            format /^(?<time>[^ ]*\s*[^ ]* [^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$/
+            time_format %b %d %H:%M:%S
+          </source>
+          <match syslog.**>
+
+            @type null
+          </match>
+

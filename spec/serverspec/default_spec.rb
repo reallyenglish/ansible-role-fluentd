@@ -40,3 +40,12 @@ describe command("#{fluent_gem_bin} list") do
   its(:stdout) { should match /fluent-plugin-redis/ }
   its(:stdout) { should match /fluent-plugin-secure-forward/ }
 end
+
+describe file("#{fluentd_config_dir}/listen_on_5140.conf") do
+  its(:content) { should match /@type syslog/ }
+  its(:content) { should match /port 5140/ }
+end
+
+describe port(5140) do
+  it { should be_listening }
+end

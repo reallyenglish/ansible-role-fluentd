@@ -19,10 +19,28 @@
 - command: "{{ fluentd_gem_bin }} install {{ item }}"
   with_items: "{{ fluentd_plugins_to_install }}"
 
+- name: Create config fragments
+  template:
+    src: fragment.conf.j2
+    dest: "{{ fluentd_config_dir }}/{{ item.key }}.conf"
+    validate: "fluentd --dry-run --config %s"
+  with_dict: "{{ fluentd_configs }}"
+  when: item.value.enabled
+  notify: Restart fluentd
+
+- name: Remove config fragments
+  file:
+    path: "{{ fluentd_config_dir }}/{{ item.key }}.conf"
+    state: absent
+  with_dict: "{{ fluentd_configs }}"
+  when: not item.value.enabled
+  notify: Restart fluentd
+
 - name: Create fluent.conf
   template:
     src: fluent.conf.j2
     dest: "{{ fluentd_config_path }}"
+    validate: "fluentd --dry-run --config %s"
   notify: Restart fluentd
 
 - name: Start fluentd
