@@ -16,8 +16,16 @@
 
 #- include: configure-forwarder.yml
 
+
+- name: Register installed plugins
+  shell: "fluent-gem list"
+  register: gem_list
+  changed_when: False
+
 - command: "{{ fluentd_gem_bin }} install {{ item }}"
   with_items: "{{ fluentd_plugins_to_install }}"
+  when: not ( gem_list.stdout | search(item) )
+  notify: Restart fluentd
 
 - name: Create config fragments
   template:
