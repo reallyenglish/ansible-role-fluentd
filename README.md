@@ -19,6 +19,9 @@ Role Variables
 | fluentd\_gem\_bin             | path to fluent-gem  | "{{ \_\_fluentd\_gem\_bin }}" |
 | fluentd\_plugins\_to\_install | plugins to install | [] |
 | fluentd\_configs              | hash of config fragments, see below | {} |
+| fluentd\_certs\_dir           | directory where cert files locate | "{{ \_\_fluentd\_certs\_dir }}" |
+| fluentd\_ca\_key              | content of ca\_key.pem | "" |
+| fluentd\_ca\_cert             | content of ca\_cert.pem | "" |
 
 Dependencies
 ------------
