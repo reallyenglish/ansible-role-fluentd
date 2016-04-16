@@ -11,6 +11,11 @@
     path: "{{ fluentd_config_dir }}"
     state: directory
     mode: 0755
+- name: Ensure certs_dir exists
+  file:
+    path: "{{ fluentd_certs_dir }}"
+    state: directory
+    mode: 0755
 
 #- include: configure-leaf.yml
 

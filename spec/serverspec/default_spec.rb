@@ -8,8 +8,7 @@ fluentd_user_name    = 'fluentd'
 fluentd_user_group   = 'fluentd'
 fluentd_work_dir     = '/var/spool/fluentd'
 fluentd_gem_bin      = '/usr/bin/fluent-gem'
-
-os_default_syslog_service_name = 'syslogd'
+fluentd_certs_dir    = '/etc/fluentd/certs'
 
 case os[:family]
 when 'freebsd'
@@ -20,6 +19,7 @@ when 'freebsd'
   fluentd_user_name    = 'root'
   fluentd_user_group   = 'wheel'
   fluent_gem_bin       = '/usr/local/bin/fluent-gem'
+  fluentd_certs_dir    = '/usr/local/etc/fluentd/certs'
 end
 
 describe package(fluentd_package_name) do
@@ -48,4 +48,9 @@ end
 
 describe port(5140) do
   it { should be_listening }
+end
+
+describe file(fluentd_certs_dir) do
+  it { should be_directory }
+  it { should be_mode 755 }
 end
