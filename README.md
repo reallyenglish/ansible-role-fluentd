@@ -22,6 +22,7 @@ Role Variables
 | fluentd\_certs\_dir           | directory where cert files locate | "{{ \_\_fluentd\_certs\_dir }}" |
 | fluentd\_ca\_key              | content of ca\_key.pem | "" |
 | fluentd\_ca\_cert             | content of ca\_cert.pem | "" |
+| fluentd\_buffer\_path         |`path to file-based buffer directory | /var/spool/fluentd |
 
 Dependencies
 ------------

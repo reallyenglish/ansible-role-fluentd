@@ -9,6 +9,7 @@ fluentd_user_group   = 'fluentd'
 fluentd_work_dir     = '/var/spool/fluentd'
 fluentd_gem_bin      = '/usr/bin/fluent-gem'
 fluentd_certs_dir    = '/etc/fluentd/certs'
+fluentd_buffer_dir   = '/var/spool/fluentd'
 
 case os[:family]
 when 'freebsd'
@@ -67,4 +68,11 @@ describe file("#{fluentd_certs_dir}/ca_cert.pem") do
   it { should be_mode 644 }
   it { should be_owned_by fluentd_user_name }
   it { should be_grouped_into fluentd_user_group }
+end
+
+describe file(fluentd_buffer_dir) do
+  it { should be_directory }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode 755 }
 end
