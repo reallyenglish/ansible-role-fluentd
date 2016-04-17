@@ -22,7 +22,8 @@ Role Variables
 | fluentd\_certs\_dir           | directory where cert files locate | "{{ \_\_fluentd\_certs\_dir }}" |
 | fluentd\_ca\_key              | content of ca\_key.pem | "" |
 | fluentd\_ca\_cert             | content of ca\_cert.pem | "" |
-| fluentd\_buffer\_path         |`path to file-based buffer directory | /var/spool/fluentd |
+| fluentd\_buffer\_path         | path to file-based buffer directory | /var/spool/fluentd |
+| fluentd\_unix\_pipe\_dir      | path to directory where AF\_UNIX pipe should be created | {{ \_\_fluentd\_unix\_pipe\_dir }} |
 
 Dependencies
 ------------

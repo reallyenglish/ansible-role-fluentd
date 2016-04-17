@@ -20,6 +20,24 @@
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
 
+- name: Ensure unix pipe directory exists
+  file:
+    path: "{{ fluentd_unix_pipe_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ fluentd_user }}"
+    group: "{{ fluentd_group }}"
+
+- command: "mkfifo -m 660 {{ fluentd_unix_pipe_dir }}/fluentd.sock"
+  args:
+    creates: "{{ fluentd_unix_pipe_dir }}/fluentd.sock"
+
+- name: Ensure pipe permission is 660
+  file:
+    path: "{{ fluentd_unix_pipe_dir }}/fluentd.sock"
+    owner: "{{ fluentd_user }}"
+    group: "{{ fluentd_group }}"
+
 - name: Ensure certs_dir exists
   file:
     path: "{{ fluentd_certs_dir }}"
