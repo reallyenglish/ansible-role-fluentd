@@ -10,6 +10,7 @@ fluentd_work_dir     = '/var/spool/fluentd'
 fluentd_gem_bin      = '/usr/bin/fluent-gem'
 fluentd_certs_dir    = '/etc/fluentd/certs'
 fluentd_buffer_dir   = '/var/spool/fluentd'
+fluentd_unix_pipe_dir= '/var/tmp/fluentd'
 
 case os[:family]
 when 'freebsd'
@@ -75,4 +76,18 @@ describe file(fluentd_buffer_dir) do
   it { should be_owned_by fluentd_user_name }
   it { should be_grouped_into fluentd_user_group }
   it { should be_mode 755 }
+end
+
+describe file(fluentd_unix_pipe_dir) do
+  it { should be_directory }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode 755 }
+end
+
+describe file("#{fluentd_unix_pipe_dir}/fluentd.sock") do
+  it { should be_pipe }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode 660 }
 end
