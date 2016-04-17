@@ -11,3 +11,4 @@ fluentd_certs_dir: "{{ __fluentd_certs_dir }}"
 fluentd_configs: {}
 fluentd_ca_key:
 fluentd_ca_cert:
+fluentd_buffer_path: /var/spool/fluentd

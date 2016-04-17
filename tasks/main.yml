@@ -11,6 +11,15 @@
     path: "{{ fluentd_config_dir }}"
     state: directory
     mode: 0755
+
+- name: Ensure buffer directory exists
+  file:
+    path: "{{ fluentd_buffer_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ fluentd_user }}"
+    group: "{{ fluentd_group }}"
+
 - name: Ensure certs_dir exists
   file:
     path: "{{ fluentd_certs_dir }}"
