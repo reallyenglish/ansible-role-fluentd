@@ -81,7 +81,10 @@
   template:
     src: fragment.conf.j2
     dest: "{{ fluentd_config_dir }}/{{ item.key }}.conf"
-    validate: "fluentd --dry-run --config %s"
+    # --dry-run failed if the flagment has a @label but no corresponding label
+    # section with "[error]: dry run failed: @forwarded label not found"
+    #
+    # validate: "fluentd --dry-run --config %s"
   with_dict: "{{ fluentd_configs }}"
   when: item.value.enabled
   notify: Restart fluentd
