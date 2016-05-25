@@ -18,6 +18,8 @@ platforms:
     driver_config:
       ssh:
         shell: '/bin/sh'
+    transport:
+      name: sftp
 
 suites:
   - name: default
