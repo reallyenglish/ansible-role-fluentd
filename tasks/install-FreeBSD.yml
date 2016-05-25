@@ -5,12 +5,18 @@
     name: rubygem-fluentd
     state: present
 
-# probably, a bug in the port
 - name: install missing gems
   gem:
     name: "{{ item }}"
     state: present
     user_install: no
   with_items:
-    - string-scrub
     - tzinfo-data
+
+# this should be removed after 0.14.x released
+- name:
+  gem:
+    name: string-scrub
+    version: 0.0.5
+    state: present
+    user_install: no
