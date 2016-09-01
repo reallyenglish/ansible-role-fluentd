@@ -12,6 +12,12 @@ provisioner:
   require_ruby_for_busser: false
   ansible_verbosity: 1
   ansible_verbose: true
+  ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
+  http_proxy: <%= ENV['ANSIBLE_PROXY'] %>
+  additional_copy_path:
+    - extra_modules
+    - filter_plugins
+  ansible_vault_password_file: <%= File.expand_path(ENV['ANSIBLE_VAULT_PASSWORD_FILE']) %>
 
 platforms:
   - name: freebsd-10.3-amd64
