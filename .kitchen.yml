@@ -2,6 +2,9 @@
 driver:
   name: vagrant
 
+transport:
+  name: rsync
+
 provisioner:
   hosts: test-kitchen
   name: ansible_playbook
@@ -18,6 +21,9 @@ platforms:
     driver_config:
       ssh:
         shell: '/bin/sh'
+    provisioner:
+      extra_vars:
+        ansible_python_interpreter: '/usr/local/bin/python'
 
 suites:
   - name: default
