@@ -12,12 +12,12 @@ galaxy_info:
 #  - name: OpenBSD
 #    versions:
 #    - 6.0
-#  - name: Ubuntu
-#    versions:
-#    - trusty
-#  - name: EL
-#    versions:
-#    - 7
+  - name: Ubuntu
+    versions:
+    - trusty
+  - name: EL
+    versions:
+    - 7
 
   galaxy_tags:
     - log

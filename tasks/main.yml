@@ -3,8 +3,7 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- include: install-FreeBSD.yml
-  when: ansible_os_family == 'FreeBSD'
+- include: "install-{{ ansible_os_family }}.yml"
 
 - name: Ensure fluentd.conf.d exists
   file:
@@ -71,7 +70,7 @@
 
 
 - name: Register installed plugins
-  shell: "fluent-gem list"
+  shell: "{{ fluentd_gem_bin }} list"
   register: gem_list
   changed_when: False
 
@@ -105,7 +104,7 @@
   template:
     src: fluent.conf.j2
     dest: "{{ fluentd_config_path }}"
-    validate: "fluentd --dry-run --config %s"
+    validate: "{{ fluentd_bin }} --dry-run --config %s"
   notify: Restart fluentd
 
 - name: Start fluentd

@@ -1,7 +1,11 @@
 ---
+__fluentd_user: fluentd
+__fluentd_group: fluentd
 __fluentd_package_name: rubygem-fluentd
+__fluentd_service_name: fluentd
 __fluentd_config_dir: "/usr/local/etc/fluentd/conf.d"
 __fluentd_config_path: "/usr/local/etc/fluentd/fluent.conf"
+__fluentd_bin: /usr/local/bin/fluentd
 __fluentd_gem_bin: "/usr/local/bin/fluent-gem"
 __fluentd_certs_dir: "/usr/local/etc/fluentd/certs"
 __fluentd_unix_pipe_dir: /var/tmp/fluentd
