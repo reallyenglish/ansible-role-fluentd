@@ -1,0 +1,13 @@
+[server]
+192.168.21.200
+
+[client]
+192.168.21.100
+
+[fluentd:children]
+server
+client
+
+[all:children]
+server
+client
