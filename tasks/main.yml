@@ -52,6 +52,7 @@
     mode: 0644
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
+    validate: openssl x509 -text -noout -in %s
   when: fluentd_ca_cert
 
 - name: Install ca_key.pem
@@ -61,6 +62,7 @@
     mode: 0440
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
+    validate: openssl rsa -check -noout -in %s
   when: fluentd_ca_key
 
 #- include: configure-leaf.yml
