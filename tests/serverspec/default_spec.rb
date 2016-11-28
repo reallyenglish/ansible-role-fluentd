@@ -57,7 +57,7 @@ end
 
 describe file("#{fluentd_certs_dir}/ca_key.pem") do
   it { should be_file }
-  its(:content) { should match Regexp.escape('eUVHk/0/haiey+uTvUVjLMG1uKqXEKzqbhuna3k+dPuOTOYPPrAArNfVgXS3K+rV') }
+  its(:content) { should match Regexp.escape('MIIEogIBAAKCAQEAsubDxMCBata8T8++x85nlsEyXT+fEXseZAln+RffZJqqdsJt') }
   it { should be_mode 440 }
   it { should be_owned_by fluentd_user_name }
   it { should be_grouped_into fluentd_user_group }

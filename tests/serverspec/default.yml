@@ -1,0 +1,72 @@
+- hosts: localhost
+  roles:
+    - ansible-role-fluentd
+  vars:
+    fluentd_plugins_to_install:
+      - fluent-plugin-redis
+      - fluent-plugin-secure-forward
+    fluentd_ca_cert: |
+      -----BEGIN CERTIFICATE-----
+      MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV
+      BAgMAkNBMRYwFAYDVQQHDA1Nb3VudGFpbiBWaWV3MRkwFwYDVQQDDBBTZWN1cmVG
+      b3J3YXJkIENBMB4XDTcwMDEwMTAwMDAwMFoXDTIxMDQxNTE3MDE1OVowTTELMAkG
+      A1UEBhMCVVMxCzAJBgNVBAgMAkNBMRYwFAYDVQQHDA1Nb3VudGFpbiBWaWV3MRkw
+      FwYDVQQDDBBTZWN1cmVGb3J3YXJkIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+      MIIBCgKCAQEAsubDxMCBata8T8++x85nlsEyXT+fEXseZAln+RffZJqqdsJtbLmc
+      /a7u40IefQBShm3itba0dMTsPnG8rrvLtkz+3TSuN6wBTR+iM5/vBlu9Z8b983c9
+      HZ/RkDzhlucqzDSIstYbpLDefiw78ME2kpzIbDpmsudzYQCK1XHr7eIVog9pSjJS
+      UEvj967lFX1T+ajpib/cqOSjjmjCbA91Pdo+il8iTHSo+SFgG3mIVDNnztD9nBUi
+      96sWblnEDlzSH8MV9AOwM/FxI2HQ+giNQnc2NXt7q5wHBNG7fQ19+IiQ7tHjyvke
+      eQ3POmo00+NSVcKObX29e6PCqiD14OrnLQIDAQABoxAwDjAMBgNVHRMEBTADAQH/
+      MA0GCSqGSIb3DQEBBQUAA4IBAQB6t43EHkd2d8P25h1QNE1136VwC+OHg5ThPmXU
+      wexuLY35iyWDs8AdZm2wu+9L0TAd3pqqY6qJW5JblTTGFZ3372oe2043EpcGVxxF
+      /ov7VtlcD/Govu8IDkKhzojDrcKEoZCaI2zLaJpDZx5O/Zki0+fAOSNA+9HuLxUv
+      mzCgQMazeUYkvvqxnm64Skw07xQ/g8JvjmFxfOz1LqMjY/M5TOXHUTZJFwpZVwHD
+      8yt/MboSjEItdGb9qQlDfajYNYbodbbhurDXmwXRJU10uUK3RekKWOGKKoRhEOJ1
+      SCi2iwz7n1N+bqXB8nLDOOr/zL1a4zev/KpMRhQNYMFswzUe
+      -----END CERTIFICATE-----
+    fluentd_ca_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEogIBAAKCAQEAsubDxMCBata8T8++x85nlsEyXT+fEXseZAln+RffZJqqdsJt
+      bLmc/a7u40IefQBShm3itba0dMTsPnG8rrvLtkz+3TSuN6wBTR+iM5/vBlu9Z8b9
+      83c9HZ/RkDzhlucqzDSIstYbpLDefiw78ME2kpzIbDpmsudzYQCK1XHr7eIVog9p
+      SjJSUEvj967lFX1T+ajpib/cqOSjjmjCbA91Pdo+il8iTHSo+SFgG3mIVDNnztD9
+      nBUi96sWblnEDlzSH8MV9AOwM/FxI2HQ+giNQnc2NXt7q5wHBNG7fQ19+IiQ7tHj
+      yvkeeQ3POmo00+NSVcKObX29e6PCqiD14OrnLQIDAQABAoIBABL0oImYXB4V4p4S
+      RQSmuhMfJVb8Br6zbOTsmjeqb+EZAjbTIwUCJcA7aNRrjQ9xmUzlF8BpO3Wj5+Q1
+      6OgavdrzDY4iptL/RqQFVgpiR9FEpyz3yLCjUbZx2KKP0NdMZxx79H/+b69jji+Q
+      QEmiL0YZlqLhDUCnhXIhvJQhHf52aLprnjwJNrJ05ucDKGX0LhueQJuhioFa9NId
+      mogy2FEGFMRXmrEpenUo83Jd2vl2iFARLOEDdh3QOw52R3ScCkFj+3717+oFo0ox
+      voptrMsIhsLvo5KMaKb+/Hdm3B6ikEXrh+E7HWrdVXsJbj1JMUfTsWhl5A9Vt4Fe
+      AcknxAECgYEA1velrZoh7seQfCi0WfRNy9aU1F9vxBSOMnuOid2O6O/AFtzb4cl0
+      3HjpA9QSYOH47McmgnJj+fjR6hYq8Llgre8SORJJ0XkBZCPiZ4VfjHobtI2/w1et
+      Lt2Cn+4xX0t7u/f/WHH7qDV5a/hz4TBgTA56kIkrKNQV6gTWN8K5CMUCgYEA1QzC
+      e7NUH0UPaSOMQtShObFei1z2Nfc7q5PxWV//8HBfi5HsSHJUT4AYMM1A6T2s2Soe
+      NON8ZktL3ofpl/HCYHNpA7RA/WeQAJ38I/48ysjAToEoA7/g3VY3YrIhAPr13hbU
+      ZSBAwYu8fFAotnzllZPHpryIY4DaRrBLzl66O0kCgYBv8I+Owhdvbu43KT8ZJJWq
+      Urg3iub5dTbC5QJJml0DwW0GusWpYq1+7Vtxiep0Ftf3/JB6FzUmg0JUIm0D45SL
+      nlWf8H0OHnPyAJmyDIq/7QomUDYOc8aUA/c0buW42Oa68B5AoUJJymbLKZq2JenP
+      US7TuwoFfcNXlGM0sCqIfQKBgGcE1n4ORt0f/cWvRMGEI7nMBJWLDBsoQ5hB33CC
+      NTZEgE7y7rhRYGdY31mpxnuCMTSJYzXb0ml8e2FNgyzP4FfXNq5t2Qcvrrg9rJCS
+      /T5pOGQ9m+XEQK2GZR26WK8qqv0LOQT1RZrRQQEzmZw0ZKehX+dGPwUuZ13LHbza
+      nV7RAoGANcP4LuuiKXAPdVRmJEcTMkonhbnfuvabuT9lA+1iXMwnitKsjOMcfl/o
+      vdht+M6LSECkyfKFdXm1P2vYSGwJYXkuuwwq7jzFoQE927EiXvexnMQeKw0r1lBs
+      hxVIVQoMsGmyi6o5LemYhKI/EXJ6CSDJ/qXabCYArjytCXAc710=
+      -----END RSA PRIVATE KEY-----
+    fluentd_configs:
+      listen_on_5140:
+        enabled: true
+        config: |
+          <source>
+            @type syslog
+            port 5140
+            bind 127.0.0.1
+            tag syslog
+            format /^(?<time>[^ ]*\s*[^ ]* [^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$/
+            time_format %b %d %H:%M:%S
+          </source>
+          <match syslog.**>
+
+            @type null
+          </match>
+

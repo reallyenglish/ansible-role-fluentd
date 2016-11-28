@@ -28,7 +28,8 @@
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
 
-- command: "mkfifo -m 660 {{ fluentd_unix_pipe_dir }}/fluentd.sock"
+- name: Create FIFO for communicating from localhost
+  command: "mkfifo -m 660 {{ fluentd_unix_pipe_dir }}/fluentd.sock"
   args:
     creates: "{{ fluentd_unix_pipe_dir }}/fluentd.sock"
 
@@ -51,6 +52,7 @@
     mode: 0644
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
+    validate: openssl x509 -noout -in %s
   when: fluentd_ca_cert
 
 - name: Install ca_key.pem
@@ -60,6 +62,7 @@
     mode: 0440
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
+    validate: openssl rsa -check -noout -in %s
   when: fluentd_ca_key
 
 #- include: configure-leaf.yml
@@ -72,7 +75,8 @@
   register: gem_list
   changed_when: False
 
-- command: "{{ fluentd_gem_bin }} install {{ item }}"
+- name: Install fluent plugins
+  command: "{{ fluentd_gem_bin }} install {{ item }}"
   with_items: "{{ fluentd_plugins_to_install }}"
   when: not ( gem_list.stdout | search(item) )
   notify: Restart fluentd

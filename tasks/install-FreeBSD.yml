@@ -5,7 +5,7 @@
     name: rubygem-fluentd
     state: present
 
-- name: install missing gems
+- name: Install missing gems
   gem:
     name: "{{ item }}"
     state: present
@@ -14,7 +14,7 @@
     - tzinfo-data
 
 # this should be removed after 0.14.x released
-- name:
+- name: Install string-scrub
   gem:
     name: string-scrub
     version: 0.0.5
