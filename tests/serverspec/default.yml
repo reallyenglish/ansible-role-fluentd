@@ -1,12 +1,4 @@
-- hosts: all
-  pre_tasks:
-    # XXX 0.12.25 is not in the official repo
-    - shell: mkdir -p /usr/local/etc/pkg/repos
-      changed_when: false
-    - shell: "echo 'FreeBSD: { enabled:  no }' > /usr/local/etc/pkg/repos/FreeBSD.conf"
-      changed_when: false
-    - shell: "echo 'reallyenglish: { url: \"pkg+http://10.3.build.reallyenglish.com/${ABI}\", mirror_type: \"srv\", signature_type: \"none\", enabled:  yes }' > /usr/local/etc/pkg/repos/reallyenglish.conf"
-      changed_when: false
+- hosts: localhost
   roles:
     - ansible-role-fluentd
   vars:
