@@ -1,0 +1,16 @@
+---
+
+- name: Add apt-key
+  apt_key:
+    url: https://packages.treasuredata.com/GPG-KEY-td-agent
+    state: present
+
+- name: Add treasure data repository
+  apt_repository:
+    state: present
+    repo: "deb http://packages.treasuredata.com/2/ubuntu/trusty/ trusty contrib"
+
+- name: Install fluentd
+  apt:
+    name: "{{ fluentd_package_name }}"
+    state: present
