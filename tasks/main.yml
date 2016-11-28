@@ -54,6 +54,12 @@
     validate: openssl x509 -noout -in %s
   when: fluentd_ca_cert
 
+- assert:
+    msg: "When `fluentd_ca_key` is used, you need to set `fluentd_ca_private_key_passphrase`"
+    that:
+      - fluentd_ca_private_key_passphrase != ""
+  when: fluentd_ca_key
+
 - name: Install ca_key.pem
   template:
     src: ca_key.pem.j2
@@ -61,7 +67,9 @@
     mode: 0440
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
-    validate: openssl rsa -check -noout -in %s
+    validate: openssl rsa -check -noout -passin env:FLUENTD_CA_PASS -in %s
+  environment:
+    FLUENTD_CA_PASS: "{{ fluentd_ca_private_key_passphrase }}"
   when: fluentd_ca_key
 
 #- include: configure-leaf.yml
