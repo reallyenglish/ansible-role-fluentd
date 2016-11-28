@@ -1,6 +1,6 @@
 /.kitchen/
 .kitchen.local.yml
-.swp
+*.swp
 .bundle/
 vendor/
 Gemfile.lock
