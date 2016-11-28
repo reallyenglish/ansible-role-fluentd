@@ -14,10 +14,12 @@ provisioner:
   ansible_verbose: true
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
   http_proxy: <%= ENV['ANSIBLE_PROXY'] %>
+  idempotency_test: true
   additional_copy_path:
     - extra_modules
     - filter_plugins
-  ansible_vault_password_file: <%= File.expand_path(ENV['ANSIBLE_VAULT_PASSWORD_FILE']) %>
+    - extra_roles
+  ansible_vault_password_file: <%= File.expand_path(ENV['ANSIBLE_VAULT_PASSWORD_FILE'] || '') %>
 
 platforms:
   - name: freebsd-10.3-amd64
@@ -35,7 +37,7 @@ suites:
   - name: default
     provisioner:
       name: ansible_playbook
-      playbook: test/integration/default.yml
+      playbook: tests/serverspec/default.yml
     verifier:
       name: shell
-      command: rspec -c -f d -I spec/serverspec spec/serverspec/default_spec.rb
+      command: rspec -c -f d -I tests/serverspec tests/serverspec/default_spec.rb
