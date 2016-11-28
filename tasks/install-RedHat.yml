@@ -1,0 +1,21 @@
+---
+
+- name: Add treasuredata yum repository
+  yum_repository:
+    name: treasuredata
+    description: "TreasureData yum repository for {{ fluentd_package_name }}"
+    baseurl: http://packages.treasuredata.com/2/redhat/$releasever/$basearch
+    gpgcheck: yes
+    gpgkey: https://packages.treasuredata.com/GPG-KEY-td-agent
+    enabled: true
+    state: present
+
+- name: Install fluentd
+  yum:
+    name: "{{ fluentd_package_name }}"
+    state: present
+
+- name: Install openssl
+  yum:
+    name: openssl
+    state: present

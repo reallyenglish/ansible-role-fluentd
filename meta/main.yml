@@ -15,9 +15,9 @@ galaxy_info:
   - name: Ubuntu
     versions:
     - trusty
-#  - name: EL
-#    versions:
-#    - 7
+  - name: EL
+    versions:
+    - 7
 
   galaxy_tags:
     - log
