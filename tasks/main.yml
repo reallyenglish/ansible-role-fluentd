@@ -52,7 +52,7 @@
     mode: 0644
     owner: "{{ fluentd_user }}"
     group: "{{ fluentd_group }}"
-    validate: openssl x509 -text -noout -in %s
+    validate: openssl x509 -noout -in %s
   when: fluentd_ca_cert
 
 - name: Install ca_key.pem
