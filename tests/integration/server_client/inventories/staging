@@ -8,6 +8,17 @@
 server
 client
 
+[fluentd_secret:children]
+server
+client
+
+[server_secret:children]
+server
+
+[fluentd_secret:children]
+server
+client
+
 [all:children]
 server
 client
