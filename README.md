@@ -10,17 +10,21 @@ None
 
 | variable | description | default |
 |----------|-------------|---------|
-| fluentd\_config\_dir          | path to conf.d directory | "{{ \_\_fluentd\_config\_dir }}" |
-| fluentd\_config\_path         | path to fluent.conf | "{{ \_\_fluentd\_config\_path }}" |
-| fluentd\_service\_name        | service name | fluentd |
-| fluentd\_gem\_bin             | path to fluent-gem  | "{{ \_\_fluentd\_gem\_bin }}" |
-| fluentd\_plugins\_to\_install | plugins to install | [] |
-| fluentd\_configs              | hash of config fragments, see below | {} |
-| fluentd\_certs\_dir           | directory where cert files locate | "{{ \_\_fluentd\_certs\_dir }}" |
-| fluentd\_ca\_key              | content of ca\_key.pem | "" |
-| fluentd\_ca\_cert             | content of ca\_cert.pem | "" |
-| fluentd\_buffer\_path         | path to file-based buffer directory | /var/spool/fluentd |
-| fluentd\_unix\_pipe\_dir      | path to directory where AF\_UNIX pipe should be created | {{ \_\_fluentd\_unix\_pipe\_dir }} |
+| `fluentd_user`                | the user of `fluentd` | `{{ __fluentd_user }}` |
+| `fluentd_group`               | the group of `fluentd` | `{{ __fluentd_group }}` |
+| `fluentd_package_name`        | package name of `fluentd` | `{{ __fluentd_package_name }}` |
+| `fluentd_config_dir`          | path to `conf.d` directory | `{{ __fluentd_config_dir }}` |
+| `fluentd_config_path`         | path to `fluent.conf` | `{{ __fluentd_config_path }}` |
+| `fluentd_service_name`        | service name of `fluentd` | `{{  __fluentd_service_name }}` |
+| `fluentd_gem_bin`             | path to `fluent-gem`  | `{{ __fluentd_gem_bin }}` |
+| `fluentd_plugins_to_install`  | list of plug-in names to install | `[]` |
+| `fluentd_certs_dir`           | path to directory where cert files reside | `{{ __fluentd_certs_dir }}` |
+| `fluentd_configs`             | dict of config fragments, see below | {} |
+| `fluentd_ca_key`              | content of `ca_key.pem` | "" |
+| `fluentd_ca_cert`             | content of `ca_cert.pem` | "" |
+| `fluentd_ca_private_key_passphrase` | the passphrase of `ca_key.pem` | "" |
+| `fluentd_buffer_path`         | path to file-based buffer directory | `/var/spool/fluentd` |
+| `fluentd_unix_pipe_dir`       | path to directory where `AF_UNIX` pipe should be created | `{{ __fluentd_unix_pipe_dir }}` |
 
 # Dependencies
 
@@ -56,7 +60,7 @@ passed in as parameters) is always nice for users too:
 
 ## fluentd\_configs
 
-Key is the name of the config fragment. the key has a hash described below.
+Key is the name of the config fragment file. the key has a hash described below.
 
 | key     | value                                            |
 |---------|--------------------------------------------------|
