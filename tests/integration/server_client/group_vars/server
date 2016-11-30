@@ -42,8 +42,9 @@ fluentd_configs:
       # log events to a file
       <match **>
         @type file
+        buffer_type memory
+        append true
         path /tmp/fluentd.log
-        time_slice_wait 10s
+        flush_interval 1s
         time_format %Y%m%dT%H%M%S%z
-        symlink_path /tmp/fluentd.log
       </match>

@@ -1,6 +1,7 @@
 require 'infrataster/rspec'
 require 'digest'
 require 'shellwords'
+require 'json'
 
 ENV['VAGRANT_CWD'] = File.dirname(__FILE__)
 ENV['LANG'] = 'C'
