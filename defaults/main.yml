@@ -4,12 +4,13 @@ fluentd_user: "{{ __fluentd_user }}"
 fluentd_group: "{{ __fluentd_group }}"
 fluentd_package_name: "{{ __fluentd_package_name }}"
 fluentd_config_dir: "{{ __fluentd_config_dir }}"
-fluentd_config_path: "{{ __fluentd_config_path }}"
+fluentd_config_file: "{{ __fluentd_config_file }}"
+fluentd_config_fragment_dir: "{{ fluentd_config_dir }}/conf.d"
 fluentd_service_name: "{{ __fluentd_service_name }}"
 fluentd_bin: "{{ __fluentd_bin }}"
 fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
 fluentd_plugins_to_install: []
-fluentd_certs_dir: "{{ __fluentd_certs_dir }}"
+fluentd_certs_dir: "{{ __fluentd_config_dir }}/certs"
 fluentd_configs: {}
 fluentd_ca_key:
 fluentd_ca_cert:
