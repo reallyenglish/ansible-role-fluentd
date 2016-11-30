@@ -1,0 +1,23 @@
+---
+- hosts: client
+  become: yes
+  become_method: sudo
+  environment:
+    http_proxy: "{{ http_proxy | default() }}"
+    https_proxy: "{{ https_proxy | default() }}"
+    no_proxy: "{{ no_proxy | default() }}"
+  pre_tasks:
+    - name: Forward local syslog message to remote server
+      lineinfile:
+        dest: /etc/syslog.conf
+        insertbefore: "^!ppp"
+        line: "*.* @192.168.21.200:5140"
+      register: register_syslog_conf
+    - name: Restart syslogd
+      service:
+        name: syslogd
+        state: restarted
+      when: register_syslog_conf.changed
+
+  roles:
+    - ansible-role-fluentd

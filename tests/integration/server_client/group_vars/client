@@ -1,0 +1,24 @@
+---
+
+fluentd_configs:
+  100_input_unix_pipe:
+    enabled: true
+    config: |
+      <source>
+        @type unix
+        path {{ fluentd_unix_pipe_dir }}/fluentd.sock
+      </source>
+  900_output_secure_forward:
+    enabled: true
+    config: |
+      <match **>
+        @type secure_forward
+        shared_key password
+        self_hostname {{ ansible_fqdn }}
+        secure yes
+        ca_cert_path {{ fluentd_certs_dir }}/ca_cert.pem
+        <server>
+          host 192.168.21.200
+          port 24284
+        </server>
+      </match>

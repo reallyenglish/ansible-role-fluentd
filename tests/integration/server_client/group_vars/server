@@ -1,0 +1,50 @@
+fluentd_configs:
+  100_input_syslog_udp_freebsd:
+    enabled: true
+    config: |
+      # listen on localhost as syslog daemon, format events as valid logstash
+      # events and log the event
+      <source>
+        @type syslog
+        port 5140
+        tag syslog
+        # FreeBSD stock syslogd (without hostname)
+        format /^(?<time>[^ ]*\s*[^ ]* [^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$/
+        # canonical syslog
+        # format /^(?<time>[^ ]*\s*[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$/
+        time_format %b %d %H:%M:%S
+      </source>
+  110_input_secure_forward:
+    enabled: true
+    config: |
+      # listen on default secure forward port and use private CA to secure the
+      # transport
+      <source>
+        @type secure_forward
+        port 24284
+        shared_key {{ shared_password }}
+        self_hostname {{ ansible_fqdn }}
+        ca_cert_path {{ fluentd_certs_dir }}/ca_cert.pem
+        ca_private_key_path {{ fluentd_certs_dir }}/ca_key.pem
+        ca_private_key_passphrase password
+        secure yes
+      </source>
+  120_input_unix_pipe:
+    enabled: true
+    config: |
+      <source>
+        @type unix
+        path {{ fluentd_unix_pipe_dir }}/fluentd.sock
+      </source>
+  900_output_file:
+    enabled: true
+    config: |
+      # log events to a file
+      <match **>
+        @type file
+        buffer_type memory
+        append true
+        path /tmp/fluentd.log
+        flush_interval 1s
+        time_format %Y%m%dT%H%M%S%z
+      </match>
