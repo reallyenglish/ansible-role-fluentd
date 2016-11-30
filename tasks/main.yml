@@ -7,7 +7,7 @@
 
 - name: Ensure fluentd.conf.d exists
   file:
-    path: "{{ fluentd_config_dir }}"
+    path: "{{ fluentd_config_fragment_dir }}"
     state: directory
     mode: 0755
 
@@ -91,7 +91,7 @@
 - name: Create config fragments
   template:
     src: fragment.conf.j2
-    dest: "{{ fluentd_config_dir }}/{{ item.key }}.conf"
+    dest: "{{ fluentd_config_fragment_dir }}/{{ item.key }}.conf"
     # --dry-run failed if the flagment has a @label but no corresponding label
     # section with "[error]: dry run failed: @forwarded label not found"
     #
@@ -102,7 +102,7 @@
 
 - name: Remove config fragments
   file:
-    path: "{{ fluentd_config_dir }}/{{ item.key }}.conf"
+    path: "{{ fluentd_config_fragment_dir }}/{{ item.key }}.conf"
     state: absent
   with_dict: "{{ fluentd_configs }}"
   when: not item.value.enabled
@@ -111,7 +111,7 @@
 - name: Create fluent.conf
   template:
     src: fluent.conf.j2
-    dest: "{{ fluentd_config_path }}"
+    dest: "{{ fluentd_config_file }}"
     validate: "{{ fluentd_bin }} --dry-run --config %s"
   notify: Restart fluentd
 

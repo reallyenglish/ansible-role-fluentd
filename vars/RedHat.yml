@@ -3,9 +3,8 @@ __fluentd_user: td-agent
 __fluentd_group: td-agent
 __fluentd_package_name: td-agent
 __fluentd_service_name: td-agent
-__fluentd_config_dir: "/etc/td-agent/conf.d"
-__fluentd_config_path: "/etc/td-agent/td-agent.conf"
+__fluentd_config_dir: "/etc/td-agent"
+__fluentd_config_file: "{{ __fluentd_config_dir }}/td-agent.conf"
 __fluentd_bin: "/usr/sbin/td-agent"
 __fluentd_gem_bin: "/usr/sbin/td-agent-gem"
-__fluentd_certs_dir: "/etc/td-agent/certs"
 __fluentd_unix_pipe_dir: /var/tmp/fluentd
