@@ -1,6 +1,6 @@
 # ansible-role-fluentd
 
-Install fluentd
+Configures `fluentd`.
 
 # Requirements
 
@@ -75,9 +75,6 @@ None
 
 # Example Playbook
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
-
 ```yaml
 - hosts: servers
   roles:
@@ -103,7 +100,9 @@ passed in as parameters) is always nice for users too:
 
 ## fluentd\_configs
 
-Key is the name of the config fragment file. the key has a hash described below.
+Key is the name of the config fragment file. the key has a hash described
+below. The role creates a configuration fragment of `config` under
+`fluentd_config_fragment_dir`.
 
 | key     | value                                            |
 |---------|--------------------------------------------------|
