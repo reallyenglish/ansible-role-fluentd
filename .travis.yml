@@ -26,6 +26,9 @@ script:
   # See if the repo is private
   - if curl --silent --output /dev/null --dump-header - "https://github.com/${TRAVIS_REPO_SLUG}" | grep "Status:[[:space:]]*404"; then touch .private_repo; fi
 
+  # Download depended roles
+  - if [ -f requirements.yml ]; then ansible-galaxy install -r requirements.yml -p extra_roles; fi
+
   # Basic role syntax check
   #
   # If it is a private repo, it _usually_ has secret information, or encrypted
