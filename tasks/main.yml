@@ -53,7 +53,7 @@
     group: "{{ fluentd_group }}"
     validate: openssl x509 -noout -in %s
   when:
-    - fluentd_ca_cert is defined
+    - fluentd_ca_cert | default(false)
     - fluentd_ca_cert != ''
 
 - assert:
@@ -61,7 +61,7 @@
     that:
       - fluentd_ca_private_key_passphrase != ""
   when:
-    - fluentd_ca_key is defined
+    - fluentd_ca_key | default(false)
     - fluentd_ca_key != ''
 
 - name: Install ca_key.pem
@@ -75,7 +75,7 @@
   environment:
     FLUENTD_CA_PASS: "{{ fluentd_ca_private_key_passphrase }}"
   when:
-    - fluentd_ca_key is defined
+    - fluentd_ca_key | default(false)
     - fluentd_ca_key != ''
 
 #- include: configure-leaf.yml
