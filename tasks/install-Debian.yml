@@ -8,7 +8,7 @@
 - name: Add treasure data repository
   apt_repository:
     state: present
-    repo: "deb http://packages.treasuredata.com/2/ubuntu/trusty/ trusty contrib"
+    repo: "deb http://packages.treasuredata.com/2/ubuntu/{{ ansible_distribution_release }}/ {{ ansible_distribution_release }} contrib"
 
 - name: Install fluentd
   apt:
