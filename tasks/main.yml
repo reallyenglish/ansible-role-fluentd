@@ -35,7 +35,7 @@
     group: "{{ fluentd_group }}"
     state: directory
   when:
-    - fluentd_group is defined
+    - fluentd_log_dir is defined
 
 - name: Create FIFO for communicating from localhost
   command: "mkfifo -m 660 {{ fluentd_unix_pipe_dir }}/fluentd.sock"
