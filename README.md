@@ -27,6 +27,7 @@ None
 | `fluentd_buffer_path`         | path to file-based buffer directory | `/var/spool/fluentd` |
 | `fluentd_unix_pipe_dir`       | path to directory where `AF_UNIX` pipe should be created | `{{ __fluentd_unix_pipe_dir }}` |
 | `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/fluentd` |
+| `fluentd_system_config`       | a string that is enclosed by `<system>` tag in `fluentd.conf`. use `|` in yaml to set multiple lines of system-wide configurations | `log_level error` |
 
 Note that although the role creates `fluentd_log_dir`, you need to configure
 `fluentd` to log in the directory.
@@ -84,6 +85,9 @@ None
   roles:
     - ansible-role-fluentd
   vars:
+    fluentd_system_config: |
+      log_level error
+      suppress_config_dump
     fluentd_plugins_to_install:
       - fluent-plugin-redis
       - fluent-plugin-secure-forward

@@ -12,6 +12,7 @@ fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
 fluentd_plugins_to_install: []
 fluentd_certs_dir: "{{ __fluentd_config_dir }}/certs"
 fluentd_configs: {}
+fluentd_system_config: "log_level error"
 fluentd_ca_key:
 fluentd_ca_cert:
 fluentd_ca_private_key_passphrase: ""
