@@ -2,6 +2,9 @@
   roles:
     - ansible-role-fluentd
   vars:
+    fluentd_system_config: |
+      log_level error
+      suppress_config_dump
     fluentd_plugins_to_install:
       - fluent-plugin-redis
       - fluent-plugin-secure-forward

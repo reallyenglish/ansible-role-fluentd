@@ -49,6 +49,8 @@ describe file(fluentd_config_path) do
   it { should be_mode 644 }
   it { should be_owned_by default_user }
   it { should be_grouped_into default_group }
+  its(:content) { should match(/log_level error/) }
+  its(:content) { should match(/suppress_config_dump/) }
   its(:content) { should match(/^@include\s+#{ Regexp.escape(fluentd_config_dir + "/*.conf") }$/) }
 end
 
