@@ -6,7 +6,7 @@
   changed_when: false
   failed_when: false
   register: register_openssl_s_client
-  check_mode: no
+  always_run: yes
 
 - name: Fix SNI issue
   command: curl -o /etc/apt/GPG-KEY-td-agent https://packages.treasuredata.com/GPG-KEY-td-agent
