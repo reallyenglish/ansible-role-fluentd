@@ -1,33 +1,22 @@
 ---
 
-- name: See if SNI gets in the way
-  # See https://github.com/ansible/ansible-modules-core/issues/1716
-  shell: echo | openssl s_client -connect packages.treasuredata.com:443
-  changed_when: false
-  failed_when: false
-  register: register_openssl_s_client
-  always_run: yes
-
 - name: Fix SNI issue
   command: curl -o /etc/apt/GPG-KEY-td-agent https://packages.treasuredata.com/GPG-KEY-td-agent
   args:
     creates: /etc/apt/GPG-KEY-td-agent
-  when:
-    - register_openssl_s_client.rc != 0
 
 - name: Add apt-key (from file)
   apt_key:
     file: /etc/apt/GPG-KEY-td-agent
     state: present
-  when:
-    - register_openssl_s_client.rc != 0
 
 - name: Add apt-key (from URL)
+  # XXX disable the task until ansible natively supports SNI
+  # see https://github.com/ansible/ansible-modules-core/issues/1716
   apt_key:
     url: https://packages.treasuredata.com/GPG-KEY-td-agent
     state: present
-  when:
-    - register_openssl_s_client.rc == 0
+  when: false
 
 - name: Add treasure data repository
   apt_repository:
