@@ -1,3 +1,8 @@
+## Release 1.1.1
+
+* c5ba769 [bugfix] patch record_transformer plug-in (#32)
+* f8bebb9 [bugfix] work around SNI issue (#29)
+
 ## Release 1.1.0
 
 * f4416ee [bugfix] do not hard-code system-wide configuration (#27)
