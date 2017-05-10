@@ -1,9 +1,22 @@
 ---
 
-- name: Add apt-key
+- name: Fix SNI issue
+  command: curl -o /etc/apt/GPG-KEY-td-agent https://packages.treasuredata.com/GPG-KEY-td-agent
+  args:
+    creates: /etc/apt/GPG-KEY-td-agent
+
+- name: Add apt-key (from file)
+  apt_key:
+    file: /etc/apt/GPG-KEY-td-agent
+    state: present
+
+- name: Add apt-key (from URL)
+  # XXX disable the task until ansible natively supports SNI
+  # see https://github.com/ansible/ansible-modules-core/issues/1716
   apt_key:
     url: https://packages.treasuredata.com/GPG-KEY-td-agent
     state: present
+  when: false
 
 - name: Add treasure data repository
   apt_repository:
