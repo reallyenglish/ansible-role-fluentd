@@ -13,6 +13,13 @@
   with_items:
     - tzinfo-data
 
+- name: Patch fluentd (issue \#30)
+  patch:
+    src: 0.12.14-ruby23.patch
+    dest: /usr/local/lib/ruby/gems/2.3/gems/fluentd-0.12.14/lib/fluent/plugin/filter_record_transformer.rb
+    backup: yes
+  notify: Restart fluentd
+
 # this should be removed after 0.14.x released
 - name: Install string-scrub
   gem:
