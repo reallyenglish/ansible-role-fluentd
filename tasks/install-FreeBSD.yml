@@ -13,11 +13,24 @@
   with_items:
     - tzinfo-data
 
+- name: Get ruby version
+  command: "ruby -e \"puts RUBY_VERSION.split('.')[0..1].join('.')\""
+  register: register_ruby_version
+  changed_when: false
+
+- name: Get fluentd version
+  shell: "pkg query '%v' {{ fluentd_package_name }} | sed -e 's/_.*$//'"
+  changed_when: false
+  register: register_fluentd_version
+
 - name: Patch fluentd (issue \#30)
   patch:
     src: 0.12.14-ruby23.patch
     dest: /usr/local/lib/ruby/gems/2.3/gems/fluentd-0.12.14/lib/fluent/plugin/filter_record_transformer.rb
     backup: yes
+  when:
+    - "'0.12.14' in register_fluentd_version.stdout_lines"
+    - "'2.3' in register_ruby_version.stdout_lines"
   notify: Restart fluentd
 
 # this should be removed after 0.14.x released
