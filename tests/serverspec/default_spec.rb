@@ -3,6 +3,7 @@ require 'serverspec'
 
 fluentd_package_name = 'td-agent'
 fluentd_service_name = 'td-agent'
+fluentd_conf_dir     = '/etc/td-agent'
 fluentd_config_dir   = '/etc/td-agent/conf.d'
 fluentd_config_path  = '/etc/td-agent/td-agent.conf'
 fluentd_user_name    = 'td-agent'
@@ -22,11 +23,13 @@ when 'freebsd'
   fluentd_package_name = 'rubygem-fluentd'
   fluentd_service_name = 'fluentd'
   fluentd_config_path  = '/usr/local/etc/fluentd/fluent.conf'
+  fluentd_conf_dir     = '/usr/local/etc/fluentd'
   fluentd_config_dir   = '/usr/local/etc/fluentd/conf.d'
   fluentd_gem_bin       = '/usr/local/bin/fluent-gem'
   fluentd_certs_dir    = '/usr/local/etc/fluentd/certs'
   default_group        = 'wheel'
 end
+fluentd_plugin_dir   = "#{fluentd_conf_dir}/plugin"
 
 describe package(fluentd_package_name) do
   it { should be_installed }
@@ -37,6 +40,14 @@ describe file(fluentd_config_dir) do
   it { should be_mode 755 }
 end
 
+describe file(fluentd_plugin_dir) do
+  it { should exist }
+  it { should be_directory }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  it { should be_mode 755 }
+end
+
 describe file(fluentd_log_dir) do
   it { should be_directory }
   it { should be_mode 755 }
@@ -44,6 +55,40 @@ describe file(fluentd_log_dir) do
   it { should be_grouped_into fluentd_user_group }
 end
 
+case os[:family]
+when "redhat"
+  describe file("/etc/sysconfig/td-agent") do
+  it { should be_file }
+  it { should be_mode 644 }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(%r{^TD_AGENT_OPTIONS=""$}) }
+  end
+when "ubuntu"
+  describe file("/etc/default/td-agent") do
+  it { should be_file }
+  it { should be_mode 644 }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(%r{^TD_AGENT_OPTIONS=""$}) }
+  end
+when "freebsd"
+  describe file("/etc/rc.conf.d") do
+  it { should be_directory }
+  it { should be_mode 755 }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  end
+
+  describe file("/etc/rc.conf.d/fluentd") do
+  it { should be_file }
+  it { should be_mode 644 }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(%r{^fluentd_flags="-p /usr/local/etc/fluentd/plugin"$}) }
+  end
+end
+  
 describe file(fluentd_config_path) do
   it { should be_file }
   it { should be_mode 644 }

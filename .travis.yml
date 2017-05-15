@@ -20,6 +20,7 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
+  - mkdir extra_roles
   - printf '[defaults]\nroles_path=../:extra_roles' >ansible.cfg
 
 script:

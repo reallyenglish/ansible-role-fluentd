@@ -1,0 +1,13 @@
+---
+
+- name: Create rc.d dir
+  file:
+    path: /etc/rc.conf.d
+    state: directory
+
+- name: Create rc.d fragment for fluentd
+  template:
+    src: FreeBSD.rc.d.j2
+    dest: /etc/rc.conf.d/fluentd
+    validate: sh -n %s
+  notify: Restart fluentd

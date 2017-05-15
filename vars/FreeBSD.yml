@@ -8,3 +8,4 @@ __fluentd_config_file: "{{ __fluentd_config_dir }}/fluent.conf"
 __fluentd_bin: /usr/local/bin/fluentd
 __fluentd_gem_bin: "/usr/local/bin/fluent-gem"
 __fluentd_unix_pipe_dir: /var/tmp/fluentd
+__fluentd_flags: ""
