@@ -60,6 +60,9 @@ script:
   # surpress a warning from `qansible qa
   - touch .kitchen.local.yml
 
+  # run rubocop
+  - bundle exec rubocop
+
   # run the QA test
   - export PATH="${PATH}:`rvm gemdir`/bin"
   - qansible qa
