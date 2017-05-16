@@ -20,7 +20,7 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
-  - mkdir extra_roles
+  - mkdir -p extra_roles
   - printf '[defaults]\nroles_path=../:extra_roles' >ansible.cfg
 
 script:
@@ -45,6 +45,11 @@ script:
 
   # download the QA scripts
   - git clone https://github.com/trombik/qansible.git
+
+  # checkout the latest release
+  - ( cd qansible && git checkout $(git describe --tags $(git rev-list --tags --max-count=1)) )
+
+  # install it
   - ( cd qansible && bundle install --path vendor/bundle --with "test" && bundle exec rake build && gem install pkg/*.gem )
   - rm -rf qansible
 
