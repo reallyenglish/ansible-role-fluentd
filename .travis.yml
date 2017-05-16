@@ -64,6 +64,7 @@ script:
   - export PATH="${PATH}:`rvm gemdir`/bin"
 
   # run rubocop
+  - ls vendor/bundle/ruby/*/bin
   - bundle exec rubocop
 
   # run the QA test
