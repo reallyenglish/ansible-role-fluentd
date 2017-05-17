@@ -2,6 +2,24 @@
 
 Configures `fluentd`.
 
+## Notes for FreeBSD
+
+The
+[`sysutils/rubygem-fluentd`](https://www.freshports.org/sysutils/rubygem-fluentd/)
+port does not patch the gem to include `fluentd_plugin_dir`, or
+`/usr/local/etc/fluentd/plugin`, by default (as of version `0.12.14_1`). If you
+manage local plugins in the directory, you need to set `fluentd_flags`.
+
+```yaml
+fluentd_flags: "-p {{ fluentd_plugin_dir }}"
+```
+
+See [Add a Plugin Via
+/etc/fluent/plugin](http://docs.fluentd.org/v0.12/articles/plugin-management#add-a-plugin-via-etcfluentplugin)
+for more details.
+
+Note that `fluentd_plugins_to_install`  does not use `fluentd_plugin_dir`.
+
 # Requirements
 
 None
