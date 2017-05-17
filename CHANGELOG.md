@@ -1,3 +1,8 @@
+## Release 1.2.0
+
+* b6b3e2d [enhancement] explain fluentd_plugin_dir and fluentd_flags (#36)
+* ebd748a [feature] introduce fluentd_flags and fluentd_plugin_dir (#35)
+
 ## Release 1.1.1
 
 * c5ba769 [bugfix] patch record_transformer plug-in (#32)
