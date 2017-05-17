@@ -17,6 +17,8 @@ None
 | `fluentd_config_file`         | path to `fluent.conf` | `{{ __fluentd_config_file }}` |
 | `fluentd_config_fragment_dir` | path to `conf.d` directory | `{{ fluentd_config_dir }}/conf.d` |
 | `fluentd_service_name`        | service name of `fluentd` | `{{  __fluentd_service_name }}` |
+| `fluentd_plugin_dir`          | path to directory where local plugins reside | `{{ fluentd_config_dir }}/plugin` |
+| `fluentd_flags`               | optional command line flags for the service | `{{ __fluentd_flags }}` |
 | `fluentd_gem_bin`             | path to `fluent-gem`  | `{{ __fluentd_gem_bin }}` |
 | `fluentd_plugins_to_install`  | list of plug-in names to install | `[]` |
 | `fluentd_certs_dir`           | path to directory where cert files reside | `{{ __fluentd_config_dir }}/certs` |
@@ -45,6 +47,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_bin` | `/usr/sbin/td-agent` |
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
+| `__fluentd_flags` | `""` |
 
 ## FreeBSD
 
@@ -54,11 +57,12 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_group` | `fluentd` |
 | `__fluentd_package_name` | `rubygem-fluentd` |
 | `__fluentd_service_name` | `fluentd` |
-| `__fluentd_config_dir` | `/usr/local/etc/fluentd/` |
+| `__fluentd_config_dir` | `/usr/local/etc/fluentd` |
 | `__fluentd_config_file` | `{{ __fluentd_config_dir }}/fluent.conf` |
 | `__fluentd_bin` | `/usr/local/bin/fluentd` |
 | `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
+| `__fluentd_flags` | `""` |
 
 ## RedHat
 
@@ -73,6 +77,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_bin` | `/usr/sbin/td-agent` |
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
+| `__fluentd_flags` | `""` |
 
 # Dependencies
 
@@ -85,6 +90,7 @@ None
   roles:
     - ansible-role-fluentd
   vars:
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% endif %}"
     fluentd_system_config: |
       log_level error
       suppress_config_dump

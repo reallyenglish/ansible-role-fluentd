@@ -20,6 +20,7 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
+  - mkdir -p extra_roles
   - printf '[defaults]\nroles_path=../:extra_roles' >ansible.cfg
 
 script:
@@ -44,6 +45,11 @@ script:
 
   # download the QA scripts
   - git clone https://github.com/trombik/qansible.git
+
+  # checkout the latest release
+  - ( cd qansible && git checkout $(git describe --tags $(git rev-list --tags --max-count=1)) )
+
+  # install it
   - ( cd qansible && bundle install --path vendor/bundle --with "test" && bundle exec rake build && gem install pkg/*.gem )
   - rm -rf qansible
 
@@ -54,8 +60,16 @@ script:
   # surpress a warning from `qansible qa
   - touch .kitchen.local.yml
 
-  # run the QA test
+  # export PATH
   - export PATH="${PATH}:`rvm gemdir`/bin"
+
+  # bundle up because rubocop is installed via Gemfile
+  - bundle install --path vendor/bundle
+
+  # run rubocop
+  - bundle exec rubocop
+
+  # run the QA test
   - qansible qa
 
 notifications:

@@ -1,0 +1,8 @@
+---
+
+- name: Create /etc/sysconfig/td-agent
+  template:
+    src: RedHat.sysconfig.j2
+    dest: /etc/sysconfig/td-agent
+    validate: sh -n %s
+  notify: Restart fluentd

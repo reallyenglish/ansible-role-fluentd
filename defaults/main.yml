@@ -7,6 +7,8 @@ fluentd_config_dir: "{{ __fluentd_config_dir }}"
 fluentd_config_file: "{{ __fluentd_config_file }}"
 fluentd_config_fragment_dir: "{{ fluentd_config_dir }}/conf.d"
 fluentd_service_name: "{{ __fluentd_service_name }}"
+fluentd_plugin_dir: "{{ fluentd_config_dir }}/plugin"
+fluentd_flags: "{{ __fluentd_flags }}"
 fluentd_bin: "{{ __fluentd_bin }}"
 fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
 fluentd_plugins_to_install: []

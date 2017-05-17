@@ -5,6 +5,13 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
+- include: "configure-{{ ansible_os_family }}.yml"
+
+- name: Create plugin directory
+  file:
+    path: "{{ fluentd_plugin_dir }}"
+    state: directory
+
 - name: Ensure fluentd.conf.d exists
   file:
     path: "{{ fluentd_config_fragment_dir }}"
