@@ -30,6 +30,8 @@ when "freebsd"
   default_group        = "wheel"
 end
 fluentd_plugin_dir = "#{fluentd_conf_dir}/plugin"
+pid_dir = "/var/run/#{fluentd_service_name}"
+pid_file = "#{pid_dir}/#{fluentd_service_name}.pid"
 
 describe package(fluentd_package_name) do
   it { should be_installed }
@@ -97,6 +99,27 @@ describe file(fluentd_config_path) do
   its(:content) { should match(/log_level error/) }
   its(:content) { should match(/suppress_config_dump/) }
   its(:content) { should match(/^@include\s+#{ Regexp.escape(fluentd_config_dir + "/*.conf") }$/) }
+end
+
+describe file(pid_dir) do
+  it { should be_directory }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  case os[:family]
+  when "freebsd"
+    mode = 775
+  else
+    mode = 755
+  end
+  it { should be_mode mode }
+end
+
+describe file(pid_file) do
+  it { should be_file }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode 644 }
+  its(:content) { should match(/^\d+$/) }
 end
 
 describe service(fluentd_service_name) do

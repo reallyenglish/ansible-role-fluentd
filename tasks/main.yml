@@ -143,3 +143,26 @@
     name: "{{ fluentd_service_name }}"
     enabled: true
     state: started
+
+- name: Check if pid directory exists
+  stat:
+    path: "{{ fluentd_pid_dir }}"
+  register: register_fluentd_stat_pid_dir
+  changed_when: false
+
+- name: Assert pid directory exists
+  assert:
+    that:
+      - register_fluentd_stat_pid_dir.stat.exists
+      - register_fluentd_stat_pid_dir.stat.isdir
+
+- name: Check if pid file exists
+  stat:
+    path: "{{ fluentd_pid_file }}"
+  register: register_fluentd_stat_pid_file
+  changed_when: false
+
+- name: Assert pid file exists
+  assert:
+    that:
+      - register_fluentd_stat_pid_file.stat.exists

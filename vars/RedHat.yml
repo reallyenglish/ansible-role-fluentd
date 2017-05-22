@@ -9,3 +9,5 @@ __fluentd_bin: "/usr/sbin/td-agent"
 __fluentd_gem_bin: "/usr/sbin/td-agent-gem"
 __fluentd_unix_pipe_dir: /var/tmp/fluentd
 __fluentd_flags: ""
+__fluentd_pid_dir: /var/run/td-agent
+__fluentd_pid_file: "{{ fluentd_pid_dir }}/fluentd.pid"
