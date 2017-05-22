@@ -149,20 +149,24 @@
     path: "{{ fluentd_pid_dir }}"
   register: register_fluentd_stat_pid_dir
   changed_when: false
+  when: not ansible_check_mode
 
 - name: Assert pid directory exists
   assert:
     that:
       - register_fluentd_stat_pid_dir.stat.exists
       - register_fluentd_stat_pid_dir.stat.isdir
+  when: not ansible_check_mode
 
 - name: Check if pid file exists
   stat:
     path: "{{ fluentd_pid_file }}"
   register: register_fluentd_stat_pid_file
   changed_when: false
+  when: not ansible_check_mode
 
 - name: Assert pid file exists
   assert:
     that:
       - register_fluentd_stat_pid_file.stat.exists
+  when: not ansible_check_mode
