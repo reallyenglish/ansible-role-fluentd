@@ -46,15 +46,15 @@ if os[:family] == "openbsd"
   describe package(fluentd_package_name) do
     it do
       pending "regex in serverspec does not match"
-      # $ sudo -p 'Password: ' /bin/sh -c gem\ list\ --local\ \|\ grep\ -iw\ --\ \\\^fluentd\\\ 
+      # $ sudo -p 'Password: ' /bin/sh -c gem\ list\ --local\ \|\ grep\ -iw\ --\ \\\^fluentd\\\
       # $ echo $?
       # 1
       #
       # if `-w` flag is removed, it does
       #
-      # $ sudo -p 'Password: ' /bin/sh -c gem\ list\ --local\ \|\ grep\ -i\ --\ \\\^fluentd\\\   
+      # $ sudo -p 'Password: ' /bin/sh -c gem\ list\ --local\ \|\ grep\ -i\ --\ \\\^fluentd\\\
       # fluentd (0.14.16)
-      should be_installed.by('gem')
+      should be_installed.by("gem")
     end
   end
   describe command("gem list --local") do
