@@ -82,6 +82,21 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
 
+## OpenBSD
+
+| Variable | Default |
+|----------|---------|
+| `__fluentd_user` | `_fluentd` |
+| `__fluentd_group` | `_fluentd` |
+| `__fluentd_package_name` | `rubygem-fluentd` |
+| `__fluentd_service_name` | `fluentd` |
+| `__fluentd_config_dir` | `/etc/fluentd` |
+| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/fluent.conf` |
+| `__fluentd_bin` | `/usr/local/bin/fluentd23` |
+| `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem23` |
+| `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
+| `__fluentd_flags` | `""` |
+
 ## RedHat
 
 | Variable | Default |
@@ -108,7 +123,7 @@ None
   roles:
     - ansible-role-fluentd
   vars:
-    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% endif %}"
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %}"
     fluentd_system_config: |
       log_level error
       suppress_config_dump

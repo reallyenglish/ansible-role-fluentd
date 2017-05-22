@@ -28,11 +28,44 @@ when "freebsd"
   fluentd_gem_bin = "/usr/local/bin/fluent-gem"
   fluentd_certs_dir    = "/usr/local/etc/fluentd/certs"
   default_group        = "wheel"
+when "openbsd"
+  fluentd_user_name     = "_fluentd"
+  fluentd_user_group    = "_fluentd"
+  fluentd_package_name  = "fluentd"
+  fluentd_service_name  = "fluentd"
+  fluentd_config_path   = "/etc/fluentd/fluent.conf"
+  fluentd_conf_dir      = "/etc/fluentd"
+  fluentd_config_dir    = "/etc/fluentd/conf.d"
+  fluentd_gem_bin       = "/usr/local/bin/fluent-gem23"
+  fluentd_certs_dir     = "#{fluentd_conf_dir}/certs"
+  default_group         = "wheel"
 end
 fluentd_plugin_dir = "#{fluentd_conf_dir}/plugin"
 
-describe package(fluentd_package_name) do
-  it { should be_installed }
+if os[:family] == "openbsd"
+  describe package(fluentd_package_name) do
+    it do
+      pending "regex in serverspec does not match"
+      # $ sudo -p 'Password: ' /bin/sh -c gem\ list\ --local\ \|\ grep\ -iw\ --\ \\\^fluentd\\\ 
+      # $ echo $?
+      # 1
+      #
+      # if `-w` flag is removed, it does
+      #
+      # $ sudo -p 'Password: ' /bin/sh -c gem\ list\ --local\ \|\ grep\ -i\ --\ \\\^fluentd\\\   
+      # fluentd (0.14.16)
+      should be_installed.by('gem')
+    end
+  end
+  describe command("gem list --local") do
+    its(:stdout) { should match(/^fluentd /) }
+    its(:exit_status) { should eq(0) }
+    its(:stderr) { should eq("") }
+  end
+else
+  describe package(fluentd_package_name) do
+    it { should be_installed }
+  end
 end
 
 describe file(fluentd_config_dir) do
@@ -56,6 +89,14 @@ describe file(fluentd_log_dir) do
 end
 
 case os[:family]
+when "openbsd"
+  describe file("/etc/rc.conf.local") do
+    it { should be_file }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    it { should be_mode 644 }
+    its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin")}/) }
+  end
 when "redhat"
   describe file("/etc/sysconfig/td-agent") do
     it { should be_file }
@@ -115,7 +156,18 @@ describe file("#{fluentd_config_dir}/listen_on_5140.conf") do
 end
 
 describe port(5140) do
-  it { should be_listening }
+  it do
+    pending "fails because regex is wrong" if os[:family] == "openbsd"
+    # udp          0      0  127.0.0.1.5140         *.*
+    should be_listening
+  end
+end
+
+if os[:family] == "openbsd"
+  describe command("netstat -anf inet") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/udp\s+\d+\s+\d+\s+#{Regexp.escape("127.0.0.1")}\.5140\s+\*\.\*/) }
+  end
 end
 
 describe file(fluentd_certs_dir) do

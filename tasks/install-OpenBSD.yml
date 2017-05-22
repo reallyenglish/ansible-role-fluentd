@@ -1,0 +1,49 @@
+---
+
+- name: Install ruby 2.3.1p1
+  # XXX assumes ruby 2.3
+  # TODO this should be handled by ansible-role-ruby
+  openbsd_pkg:
+    name: ruby-2.3.1p1
+    state: present
+
+- name: Create symlinks to ruby binaries
+  shell: "pkg_info -e 'ruby->=2.3' -M | grep -E '^ ln -sf ' | sh -"
+  args:
+    creates: /usr/local/bin/ruby
+
+- name: Install gem
+  openbsd_pkg:
+    name: ruby-gems
+    state: present
+
+- name: Install fluentd via gem
+  gem:
+    name: fluentd
+    executable: gem23
+    user_install: false
+    state: present
+
+- name: Create _fluentd group
+  group:
+    name: _fluentd
+    gid: 900
+
+- name: Create _fluentd user
+  user:
+    name: _fluentd
+    comment: Fluend daemon
+    shell: /sbin/nologin
+    uid: 900
+    group: _fluentd
+    home: /var/empty
+    createhome: false
+    login_class: daemon
+    state: present
+
+- name: Copy rc.sub for fluentd
+  copy:
+    src: OpenBSD.rc.subr
+    dest: /etc/rc.d/fluentd
+    mode: 0755
+  notify: Restart fluentd

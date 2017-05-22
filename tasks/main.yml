@@ -143,3 +143,4 @@
     name: "{{ fluentd_service_name }}"
     enabled: true
     state: started
+    arguments: "{{ fluentd_flags }}"
