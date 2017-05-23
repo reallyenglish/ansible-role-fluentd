@@ -143,6 +143,7 @@
     name: "{{ fluentd_service_name }}"
     enabled: true
     state: started
+    arguments: "{{ fluentd_flags }}"
 
 - name: Check if pid directory exists
   # Test if the PID directory and file exist. In most cases, an ansible role,

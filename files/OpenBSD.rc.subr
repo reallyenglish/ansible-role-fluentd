@@ -1,0 +1,15 @@
+#!/bin/sh
+
+daemon="/usr/local/bin/fluentd23"
+daemon_flags="--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf"
+daemon_user="_fluentd"
+
+. /etc/rc.d/rc.subr
+
+pexp=".*${pexp}"
+rc_reload=NO
+
+rc_pre() {
+    install -d -o ${daemon_user} -g ${daemon_user} /var/run/fluentd
+}
+rc_cmd $1

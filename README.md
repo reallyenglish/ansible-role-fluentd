@@ -63,7 +63,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `td-agent` |
 | `__fluentd_service_name` | `td-agent` |
 | `__fluentd_config_dir` | `/etc/td-agent` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/td-agent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/td-agent.conf` |
 | `__fluentd_bin` | `/usr/sbin/td-agent` |
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
@@ -80,9 +80,26 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `rubygem-fluentd` |
 | `__fluentd_service_name` | `fluentd` |
 | `__fluentd_config_dir` | `/usr/local/etc/fluentd` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/fluent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/fluent.conf` |
 | `__fluentd_bin` | `/usr/local/bin/fluentd` |
 | `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem` |
+| `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
+| `__fluentd_flags` | `""` |
+| `__fluentd_pid_dir` | `/var/run/fluentd` |
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/fluentd.pid` |
+
+## OpenBSD
+
+| Variable | Default |
+|----------|---------|
+| `__fluentd_user` | `_fluentd` |
+| `__fluentd_group` | `_fluentd` |
+| `__fluentd_package_name` | `rubygem-fluentd` |
+| `__fluentd_service_name` | `fluentd` |
+| `__fluentd_config_dir` | `/etc/fluentd` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/fluent.conf` |
+| `__fluentd_bin` | `/usr/local/bin/fluentd23` |
+| `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem23` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
 | `__fluentd_pid_dir` | `/var/run/fluentd` |
@@ -97,7 +114,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `td-agent` |
 | `__fluentd_service_name` | `td-agent` |
 | `__fluentd_config_dir` | `/etc/td-agent` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/td-agent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/td-agent.conf` |
 | `__fluentd_bin` | `/usr/sbin/td-agent` |
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
@@ -116,7 +133,7 @@ None
   roles:
     - ansible-role-fluentd
   vars:
-    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% endif %}"
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %}"
     fluentd_system_config: |
       log_level error
       suppress_config_dump

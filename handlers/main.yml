@@ -5,4 +5,3 @@
   service:
     name: "{{ fluentd_service_name }}"
     state: restarted
-    enabled: true
