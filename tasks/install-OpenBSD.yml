@@ -32,7 +32,7 @@
 - name: Create _fluentd user
   user:
     name: _fluentd
-    comment: Fluend daemon
+    comment: Fluentd daemon
     shell: /sbin/nologin
     uid: 900
     group: _fluentd
