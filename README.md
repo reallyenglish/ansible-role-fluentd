@@ -68,8 +68,8 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
-| `__fluentd_pid_dir` | `/var/run/fluentd` |
-| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/fluentd.pid` |
+| `__fluentd_pid_dir` | `/var/run/td-agent` |
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/td-agent.pid` |
 
 ## FreeBSD
 
@@ -103,8 +103,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
 | `__fluentd_pid_dir` | `/var/run/td-agent` |
-| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/fluentd.pid` |
-
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/td-agent.pid` |
 
 # Dependencies
 
