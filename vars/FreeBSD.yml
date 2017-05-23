@@ -4,7 +4,7 @@ __fluentd_group: fluentd
 __fluentd_package_name: rubygem-fluentd
 __fluentd_service_name: fluentd
 __fluentd_config_dir: "/usr/local/etc/fluentd"
-__fluentd_config_file: "{{ __fluentd_config_dir }}/fluent.conf"
+__fluentd_config_file: "{{ fluentd_config_dir }}/fluent.conf"
 __fluentd_bin: /usr/local/bin/fluentd
 __fluentd_gem_bin: "/usr/local/bin/fluent-gem"
 __fluentd_unix_pipe_dir: /var/tmp/fluentd
