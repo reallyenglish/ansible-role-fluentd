@@ -145,6 +145,13 @@
     state: started
 
 - name: Check if pid directory exists
+  # Test if the PID directory and file exist. In most cases, an ansible role,
+  # like this one, does not care of them. They are supposed to be created by a
+  # package. The following tasks are trying to assure both `fluentd_pid_dir` and
+  # `fluentd_pid_file` are correctly set by the role. Without them, when they
+  # are wrong, the role does not fail because they are not used in the role.
+  # But something that depends on any of them will fail, loudly or worse,
+  # silently.
   stat:
     path: "{{ fluentd_pid_dir }}"
   register: register_fluentd_stat_pid_dir
@@ -159,14 +166,8 @@
   when: not ansible_check_mode
 
 - name: Check if pid file exists
-  stat:
+  file:
     path: "{{ fluentd_pid_file }}"
-  register: register_fluentd_stat_pid_file
+    state: file
   changed_when: false
-  when: not ansible_check_mode
-
-- name: Assert pid file exists
-  assert:
-    that:
-      - register_fluentd_stat_pid_file.stat.exists
   when: not ansible_check_mode
