@@ -48,6 +48,8 @@ None
 | `fluentd_unix_pipe_dir`       | path to directory where `AF_UNIX` pipe should be created | `{{ __fluentd_unix_pipe_dir }}` |
 | `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/fluentd` |
 | `fluentd_system_config`       | a string that is enclosed by `<system>` tag in `fluentd.conf`. use `|` in yaml to set multiple lines of system-wide configurations | `log_level error` |
+| `fluentd_pid_dir` | path to PID directory | `"{{ __fluentd_pid_dir }}"` |
+| `fluentd_pid_file` | path to PID file | `"{{ __fluentd_pid_file }}"` |
 
 Note that although the role creates `fluentd_log_dir`, you need to configure
 `fluentd` to log in the directory.
@@ -66,6 +68,8 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
+| `__fluentd_pid_dir` | `/var/run/td-agent` |
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/td-agent.pid` |
 
 ## FreeBSD
 
@@ -81,6 +85,8 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
+| `__fluentd_pid_dir` | `/var/run/fluentd` |
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/fluentd.pid` |
 
 ## RedHat
 
@@ -96,6 +102,8 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
+| `__fluentd_pid_dir` | `/var/run/td-agent` |
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/td-agent.pid` |
 
 # Dependencies
 

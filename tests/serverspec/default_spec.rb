@@ -15,6 +15,7 @@ fluentd_unix_pipe_dir = "/var/tmp/fluentd"
 fluentd_log_dir      = "/var/log/fluentd"
 default_user         = "root"
 default_group        = "root"
+pid_dir_mode         = 755
 
 case os[:family]
 when "freebsd"
@@ -28,8 +29,11 @@ when "freebsd"
   fluentd_gem_bin = "/usr/local/bin/fluent-gem"
   fluentd_certs_dir    = "/usr/local/etc/fluentd/certs"
   default_group        = "wheel"
+  pid_dir_mode         = 775
 end
 fluentd_plugin_dir = "#{fluentd_conf_dir}/plugin"
+pid_dir = "/var/run/#{fluentd_service_name}"
+pid_file = "#{pid_dir}/#{fluentd_service_name}.pid"
 
 describe package(fluentd_package_name) do
   it { should be_installed }
@@ -97,6 +101,21 @@ describe file(fluentd_config_path) do
   its(:content) { should match(/log_level error/) }
   its(:content) { should match(/suppress_config_dump/) }
   its(:content) { should match(/^@include\s+#{ Regexp.escape(fluentd_config_dir + "/*.conf") }$/) }
+end
+
+describe file(pid_dir) do
+  it { should be_directory }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode pid_dir_mode }
+end
+
+describe file(pid_file) do
+  it { should be_file }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode 644 }
+  its(:content) { should match(/^\d+$/) }
 end
 
 describe service(fluentd_service_name) do
