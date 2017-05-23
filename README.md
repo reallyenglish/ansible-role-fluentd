@@ -102,6 +102,8 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem23` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
+| `__fluentd_pid_dir` | `/var/run/fluentd` |
+| `__fluentd_pid_file` | `{{ fluentd_pid_dir }}/fluentd.pid` |
 
 ## RedHat
 
