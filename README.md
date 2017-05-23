@@ -63,7 +63,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `td-agent` |
 | `__fluentd_service_name` | `td-agent` |
 | `__fluentd_config_dir` | `/etc/td-agent` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/td-agent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/td-agent.conf` |
 | `__fluentd_bin` | `/usr/sbin/td-agent` |
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
@@ -80,7 +80,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `rubygem-fluentd` |
 | `__fluentd_service_name` | `fluentd` |
 | `__fluentd_config_dir` | `/usr/local/etc/fluentd` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/fluent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/fluent.conf` |
 | `__fluentd_bin` | `/usr/local/bin/fluentd` |
 | `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
@@ -97,7 +97,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `rubygem-fluentd` |
 | `__fluentd_service_name` | `fluentd` |
 | `__fluentd_config_dir` | `/etc/fluentd` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/fluent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/fluent.conf` |
 | `__fluentd_bin` | `/usr/local/bin/fluentd23` |
 | `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem23` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
@@ -114,7 +114,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_package_name` | `td-agent` |
 | `__fluentd_service_name` | `td-agent` |
 | `__fluentd_config_dir` | `/etc/td-agent` |
-| `__fluentd_config_file` | `{{ __fluentd_config_dir }}/td-agent.conf` |
+| `__fluentd_config_file` | `{{ fluentd_config_dir }}/td-agent.conf` |
 | `__fluentd_bin` | `/usr/sbin/td-agent` |
 | `__fluentd_gem_bin` | `/usr/sbin/td-agent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
