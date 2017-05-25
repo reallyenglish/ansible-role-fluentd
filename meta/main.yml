@@ -23,5 +23,6 @@ galaxy_info:
   galaxy_tags:
     - log
     - logging
-#dependencies:
-#  - { role: username.common, some_parameter: 3 }
+dependencies:
+  - role: reallyenglish.language-ruby
+    when: ansible_os_family == 'OpenBSD'

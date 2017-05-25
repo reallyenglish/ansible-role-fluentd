@@ -77,4 +77,4 @@
 
             @type null
           </match>
-
+    language_ruby_package: ruby-2.3.1p1 # N/A except OpenBSD

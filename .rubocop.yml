@@ -6,6 +6,7 @@ AllCops:
     - "roles.galaxy/**/*"
     - "vendor/**/*"
     - "tests/integration/**/roles/*"
+    - "extra_roles/**/*"
     - "qansible"
   # enable detailed explanations available in cops
   # the default output is not enough to understand what is wrong

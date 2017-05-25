@@ -124,7 +124,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 
 # Dependencies
 
-None
+- reallyenglish.language-ruby (OpenBSD only)
 
 # Example Playbook
 
@@ -208,6 +208,7 @@ None
 
             @type null
           </match>
+    language_ruby_package: ruby-2.3.1p1 # N/A except OpenBSD
 ```
 
 ## fluentd\_configs
