@@ -100,8 +100,8 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
 | `__fluentd_service_name` | `fluentd` |
 | `__fluentd_config_dir` | `/etc/fluentd` |
 | `__fluentd_config_file` | `{{ fluentd_config_dir }}/fluent.conf` |
-| `__fluentd_bin` | `/usr/local/bin/fluentd23` |
-| `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem23` |
+| `__fluentd_bin` | `/usr/local/bin/fluentd` |
+| `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
 | `__fluentd_pid_dir` | `/var/run/fluentd` |

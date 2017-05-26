@@ -1,6 +1,6 @@
 #!/bin/sh
 
-daemon="/usr/local/bin/fluentd23"
+daemon="/usr/local/bin/fluentd"
 daemon_flags="--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf"
 daemon_user="_fluentd"
 

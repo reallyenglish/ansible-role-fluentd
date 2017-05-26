@@ -39,7 +39,7 @@ when "openbsd"
   fluentd_config_path   = "/etc/fluentd/fluent.conf"
   fluentd_conf_dir      = "/etc/fluentd"
   fluentd_config_dir    = "/etc/fluentd/conf.d"
-  fluentd_gem_bin       = "/usr/local/bin/fluent-gem23"
+  fluentd_gem_bin       = "/usr/local/bin/fluent-gem"
   fluentd_certs_dir     = "#{fluentd_conf_dir}/certs"
   default_group         = "wheel"
 end
