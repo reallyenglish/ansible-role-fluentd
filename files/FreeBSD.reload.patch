@@ -1,0 +1,11 @@
+--- /usr/local/etc/rc.d/fluentd.orig	2017-05-26 03:27:54.225016000 +0000
++++ /usr/local/etc/rc.d/fluentd	2017-05-26 03:29:49.173371000 +0000
+@@ -19,7 +19,7 @@
+ 
+ name=fluentd
+ rcvar=fluentd_enable
+-extra_commands="init"
++extra_commands="init reload"
+ 
+ load_rc_config $name
+ 
