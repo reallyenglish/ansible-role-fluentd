@@ -13,6 +13,7 @@ fluentd_certs_dir    = "/etc/td-agent/certs"
 fluentd_buffer_dir   = "/var/spool/fluentd"
 fluentd_unix_pipe_dir = "/var/tmp/fluentd"
 fluentd_log_dir      = "/var/log/fluentd"
+fluentd_log_file     = "/var/log/fluentd/fluentd.log"
 default_user         = "root"
 default_group        = "root"
 pid_dir_mode         = 755
@@ -99,7 +100,7 @@ when "openbsd"
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
     it { should be_mode 644 }
-    its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin")}/) }
+    its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin --log /var/log/fluentd/fluentd.log")}/) }
   end
   fluentd_binary = %w(
     fluent-binlog-reader
@@ -136,7 +137,7 @@ when "redhat"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^TD_AGENT_OPTIONS=""$/) }
+    its(:content) { should match(/^TD_AGENT_OPTIONS=" --log #{Regexp.escape("/var/log/fluentd/fluentd.log")}"$/) }
   end
 when "ubuntu"
   describe file("/etc/default/td-agent") do
@@ -144,7 +145,7 @@ when "ubuntu"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^TD_AGENT_OPTIONS=""$/) }
+    its(:content) { should match(/^TD_AGENT_OPTIONS=" --log #{Regexp.escape("/var/log/fluentd/fluentd.log")}"$/) }
   end
 when "freebsd"
   describe file("/etc/rc.conf.d") do
@@ -159,7 +160,7 @@ when "freebsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(%r{^fluentd_flags="-p /usr/local/etc/fluentd/plugin"$}) }
+    its(:content) { should match(%r{^fluentd_flags="-p /usr/local/etc/fluentd/plugin --log /var/log/fluentd/fluentd.log"$}) }
   end
 end
 
@@ -168,7 +169,7 @@ describe file(fluentd_config_path) do
   it { should be_mode 644 }
   it { should be_owned_by default_user }
   it { should be_grouped_into default_group }
-  its(:content) { should match(/log_level error/) }
+  its(:content) { should match(/log_level debug/) }
   its(:content) { should match(/suppress_config_dump/) }
   its(:content) { should match(/^@include\s+#{ Regexp.escape(fluentd_config_dir + "/*.conf") }$/) }
 end
@@ -258,4 +259,47 @@ describe file("#{fluentd_unix_pipe_dir}/fluentd.sock") do
   it { should be_owned_by fluentd_user_name }
   it { should be_grouped_into fluentd_user_group }
   it { should be_mode 660 }
+end
+
+case os[:family]
+when "redhat"
+  describe command("systemctl reload #{fluentd_service_name}") do
+    its(:exit_status) { should eq(0) }
+    its(:stdout) { should eq("") }
+    its(:stderr) { should eq("") }
+  end
+when "openbsd"
+  describe command("rcctl reload #{fluentd_service_name}") do
+    its(:exit_status) { should eq(0) }
+    its(:stdout) { should match(/^#{fluentd_service_name}\(ok\)$/) }
+    its(:stderr) { should eq("") }
+  end
+when "ubuntu"
+  if os[:release].to_f > 14.04
+    describe command("systemctl reload #{fluentd_service_name}.service") do
+      its(:exit_status) { should eq(0) }
+      its(:stdout) { should eq("") }
+      its(:stderr) { should eq("") }
+    end
+  else
+    describe command("service #{fluentd_service_name} reload") do
+      its(:exit_status) { should eq(0) }
+      its(:stdout) { should match(/Reloading #{fluentd_service_name}:\s+\* #{fluentd_service_name}/) }
+      its(:stderr) { should eq("") }
+    end
+  end
+when "freebsd"
+  describe command("service #{fluentd_service_name} reload") do
+    its(:exit_status) { should eq(0) }
+    its(:stdout) { should eq("") }
+    its(:stderr) { should eq("") }
+  end
+end
+
+describe file(fluentd_log_file) do
+  it { should be_file }
+  it { should be_owned_by fluentd_user_name }
+  it { should be_grouped_into fluentd_user_group }
+  it { should be_mode 644 }
+  its(:content) { should match(/fluentd supervisor process get SIGHUP/) }
 end
