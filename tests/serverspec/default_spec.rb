@@ -101,6 +101,35 @@ when "openbsd"
     it { should be_mode 644 }
     its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin")}/) }
   end
+  fluentd_binary = %w(
+    fluent-binlog-reader
+    fluent-cat
+    fluent-debug
+    fluent-gem
+    fluent-plugin-config-format
+    fluent-plugin-generate
+    fluentd
+  )
+  fluentd_binary.each do |bin|
+    describe file("/usr/local/bin/#{bin}") do
+      it { should be_symlink }
+      it { should be_linked_to "/usr/local/bin/#{bin}23" }
+    end
+
+    describe file("/usr/local/bin/#{bin}23") do
+      it { should be_file }
+      it { should be_mode 755 }
+      it { should be_owned_by default_user }
+      it { should be_grouped_into default_group }
+    end
+
+    describe command("/usr/local/bin/#{bin}23 --help") do
+      # intentionally ignore stdout here becase there is no common output. what
+      # is being tested here is; the binary can be compiled and runnable
+      its(:exit_status) { should eq bin == "fluent-binlog-reader" ? 1 : 0 }
+      its(:stderr) { should eq "" }
+    end
+  end
 when "redhat"
   describe file("/etc/sysconfig/td-agent") do
     it { should be_file }

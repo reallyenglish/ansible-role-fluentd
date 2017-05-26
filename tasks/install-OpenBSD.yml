@@ -1,28 +1,27 @@
 ---
 
-- name: Install ruby 2.3.1p1
-  # XXX assumes ruby 2.3
-  # TODO this should be handled by ansible-role-ruby
-  openbsd_pkg:
-    name: ruby-2.3.1p1
-    state: present
-
-- name: Create symlinks to ruby binaries
-  shell: "pkg_info -e 'ruby->=2.3' -M | grep -E '^ ln -sf ' | sh -"
-  args:
-    creates: /usr/local/bin/ruby
-
-- name: Install gem
-  openbsd_pkg:
-    name: ruby-gems
-    state: present
-
 - name: Install fluentd via gem
   gem:
     name: fluentd
-    executable: gem23
     user_install: false
     state: present
+
+- name: Get ruby version
+  command: "ruby -e \"puts RUBY_VERSION.split('.')[0..1].join\"" # 19, 20, 21 ...
+  register: register_fluentd_ruby_version_sym
+  changed_when: false
+
+- name: Get a list of gem binaries
+  shell: "gem contents fluentd | grep -E '^/usr/local/lib/ruby/gems/[[:digit:]]+\\.[[:digit:]]+/gems/fluentd-[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+/bin/'"
+  register: register_fluentd_gem_binary
+  changed_when: false
+
+- name: Create symlinks
+  file:
+    path: "/usr/local/bin/{{ item | basename }}"
+    src: "/usr/local/bin/{{ item | basename }}{{ register_fluentd_ruby_version_sym.stdout }}"
+    state: link
+  with_items: "{{ register_fluentd_gem_binary.stdout_lines }}"
 
 - name: Create _fluentd group
   group:
