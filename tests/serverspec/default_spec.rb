@@ -261,41 +261,6 @@ describe file("#{fluentd_unix_pipe_dir}/fluentd.sock") do
   it { should be_mode 660 }
 end
 
-case os[:family]
-when "redhat"
-  describe command("systemctl reload #{fluentd_service_name}") do
-    its(:exit_status) { should eq(0) }
-    its(:stdout) { should eq("") }
-    its(:stderr) { should eq("") }
-  end
-when "openbsd"
-  describe command("rcctl reload #{fluentd_service_name}") do
-    its(:exit_status) { should eq(0) }
-    its(:stdout) { should match(/^#{fluentd_service_name}\(ok\)$/) }
-    its(:stderr) { should eq("") }
-  end
-when "ubuntu"
-  if os[:release].to_f > 14.04
-    describe command("systemctl reload #{fluentd_service_name}.service") do
-      its(:exit_status) { should eq(0) }
-      its(:stdout) { should eq("") }
-      its(:stderr) { should eq("") }
-    end
-  else
-    describe command("service #{fluentd_service_name} reload") do
-      its(:exit_status) { should eq(0) }
-      its(:stdout) { should match(/Reloading #{fluentd_service_name}:\s+\* #{fluentd_service_name}/) }
-      its(:stderr) { should eq("") }
-    end
-  end
-when "freebsd"
-  describe command("service #{fluentd_service_name} reload") do
-    its(:exit_status) { should eq(0) }
-    its(:stdout) { should eq("") }
-    its(:stderr) { should eq("") }
-  end
-end
-
 describe file(fluentd_log_file) do
   it { should be_file }
   it { should be_owned_by fluentd_user_name }
