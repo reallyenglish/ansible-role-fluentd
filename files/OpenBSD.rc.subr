@@ -7,7 +7,6 @@ daemon_user="_fluentd"
 . /etc/rc.d/rc.subr
 
 pexp=".*${pexp}"
-rc_reload=NO
 
 rc_pre() {
     install -d -o ${daemon_user} -g ${daemon_user} /var/run/fluentd
