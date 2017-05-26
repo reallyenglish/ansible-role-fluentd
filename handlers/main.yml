@@ -5,3 +5,8 @@
   service:
     name: "{{ fluentd_service_name }}"
     state: restarted
+
+- name: Reload fluentd
+  service:
+    name: "{{ fluentd_service_name }}"
+    state: reloaded

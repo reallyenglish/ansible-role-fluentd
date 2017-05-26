@@ -121,7 +121,7 @@
     # validate: "fluentd --dry-run --config %s"
   with_dict: "{{ fluentd_configs }}"
   when: item.value.enabled
-  notify: Restart fluentd
+  notify: Reload fluentd
 
 - name: Remove config fragments
   file:
@@ -129,14 +129,14 @@
     state: absent
   with_dict: "{{ fluentd_configs }}"
   when: not item.value.enabled
-  notify: Restart fluentd
+  notify: Reload fluentd
 
 - name: Create fluent.conf
   template:
     src: fluent.conf.j2
     dest: "{{ fluentd_config_file }}"
     validate: "{{ fluentd_bin }} --dry-run --config %s"
-  notify: Restart fluentd
+  notify: Reload fluentd
 
 - name: Start fluentd
   service:
