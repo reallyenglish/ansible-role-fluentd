@@ -5,8 +5,44 @@
   service:
     name: "{{ fluentd_service_name }}"
     state: restarted
+  notify: Wait 3 seconds (restart)
+
+- name: Wait 3 seconds (restart)
+  # XXX insert delay between handlers.
+  # there is a race in fluentd's signal handling. the following commands
+  # reproduce the issue. the expected result is the service is restarted and
+  # reloaded. the actual result is, the service terminates
+  #
+  # # bundle exec kitchen converge without-ca-key-freebsd
+  # # bundle exec kitchen login without-ca-key-freebsd
+  # # service fluentd restart; service fluentd reload; echo $?
+  # Stopping fluentd.
+  # Starting fluentd.
+  # 0
+  # # service fluentd status
+  # fluentd is not running.
+  # see https://github.com/reallyenglish/ansible-role-fluentd/issues/44
+  #
+  # XXX two "Wait" handlers must be defined because ansible aggregates multiple
+  # calls to a hanlder into one
+  #
+  # XXX listed order of these handlers does matter. "Wait 3 seconds (restart)"
+  # must be defined before "Reload fluentd" handler. otherwise, the former is
+  # executed *after* "Reload fluentd" handler, which is not what we wanted. the
+  # wait handlers are supposed to be executed between "Restart" and "Reload"
+  #
+  # http://docs.ansible.com/ansible/glossary.html says:
+  # "Handlers are run in the order they are listed, not in the order that they
+  # are notified."
+  pause:
+    seconds: 3
 
 - name: Reload fluentd
   service:
     name: "{{ fluentd_service_name }}"
     state: reloaded
+  notify: Wait 3 seconds (reload)
+
+- name: Wait 3 seconds (reload)
+  pause:
+    seconds: 3
