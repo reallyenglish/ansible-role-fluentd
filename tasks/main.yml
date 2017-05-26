@@ -143,7 +143,11 @@
     name: "{{ fluentd_service_name }}"
     enabled: true
     state: started
-    arguments: "{{ fluentd_flags }}"
+    # XXX `arguments` has different meanings depending on ansible_os_family.
+    # in OpenBSD, `arguments` is passed to command line option of `daemon`. in
+    # other platforms, it is passed to _service_ command, such as `systemctl` in
+    # CentOS, and `service(8)` command. I consider it as ansible's bug
+    arguments: "{% if ansible_os_family == 'OpenBSD' %}{{ fluentd_flags }}{% endif %}"
 
 - name: Check if pid directory exists
   # Test if the PID directory and file exist. In most cases, an ansible role,
