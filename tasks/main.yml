@@ -121,7 +121,7 @@
     # validate: "fluentd --dry-run --config %s"
   with_dict: "{{ fluentd_configs }}"
   when: item.value.enabled
-  notify: Restart fluentd
+  notify: Reload fluentd
 
 - name: Remove config fragments
   file:
@@ -129,21 +129,25 @@
     state: absent
   with_dict: "{{ fluentd_configs }}"
   when: not item.value.enabled
-  notify: Restart fluentd
+  notify: Reload fluentd
 
 - name: Create fluent.conf
   template:
     src: fluent.conf.j2
     dest: "{{ fluentd_config_file }}"
     validate: "{{ fluentd_bin }} --dry-run --config %s"
-  notify: Restart fluentd
+  notify: Reload fluentd
 
 - name: Start fluentd
   service:
     name: "{{ fluentd_service_name }}"
     enabled: true
     state: started
-    arguments: "{{ fluentd_flags }}"
+    # XXX `arguments` has different meanings depending on ansible_os_family.
+    # in OpenBSD, `arguments` is passed to command line option of `daemon`. in
+    # other platforms, it is passed to _service_ command, such as `systemctl` in
+    # CentOS, and `service(8)` command. I consider it as ansible's bug
+    arguments: "{% if ansible_os_family == 'OpenBSD' %}{{ fluentd_flags }}{% endif %}"
 
 - name: Check if pid directory exists
   # Test if the PID directory and file exist. In most cases, an ansible role,

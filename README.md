@@ -47,12 +47,14 @@ None
 | `fluentd_buffer_path`         | path to file-based buffer directory | `/var/spool/fluentd` |
 | `fluentd_unix_pipe_dir`       | path to directory where `AF_UNIX` pipe should be created | `{{ __fluentd_unix_pipe_dir }}` |
 | `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/fluentd` |
+| `fluentd_log_file` | path to log file | `{{ fluentd_log_dir }}/fluentd.log` |
 | `fluentd_system_config`       | a string that is enclosed by `<system>` tag in `fluentd.conf`. use `|` in yaml to set multiple lines of system-wide configurations | `log_level error` |
 | `fluentd_pid_dir` | path to PID directory | `"{{ __fluentd_pid_dir }}"` |
 | `fluentd_pid_file` | path to PID file | `"{{ __fluentd_pid_file }}"` |
 
-Note that although the role creates `fluentd_log_dir`, you need to configure
-`fluentd` to log in the directory.
+Note that although the role provides `fluentd_log_dir` and `fluentd_log_file`,
+you need to configure `fluentd` to log to `fluentd_log_file`. The role does
+_NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
 
 ## Debian
 
@@ -99,7 +101,7 @@ Note that although the role creates `fluentd_log_dir`, you need to configure
 | `__fluentd_config_dir` | `/etc/fluentd` |
 | `__fluentd_config_file` | `{{ fluentd_config_dir }}/fluent.conf` |
 | `__fluentd_bin` | `/usr/local/bin/fluentd23` |
-| `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem23` |
+| `__fluentd_gem_bin` | `/usr/local/bin/fluent-gem` |
 | `__fluentd_unix_pipe_dir` | `/var/tmp/fluentd` |
 | `__fluentd_flags` | `""` |
 | `__fluentd_pid_dir` | `/var/run/fluentd` |
