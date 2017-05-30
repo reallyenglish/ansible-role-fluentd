@@ -1,3 +1,10 @@
+## Release 1.3.0
+
+* 35c0b41 [feature][bugfix] support reloading fluentd (#45)
+* e877178 remove hard-coded ruby installation tasks (#43)
+* 576e7d0 [feature] support OpenBSD (#41)
+* 522a0fd [feature] support fluentd_pid_dir and fluentd_pid_file (#39)
+
 ## Release 1.2.0
 
 * b6b3e2d [enhancement] explain fluentd_plugin_dir and fluentd_flags (#36)
