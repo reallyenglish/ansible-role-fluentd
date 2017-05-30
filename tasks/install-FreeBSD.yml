@@ -7,6 +7,9 @@
   register: register_fluentd_rubygem_fluentd
 
 - name: Patch rc.d script
+  # XXX patch rc.d script so that it supports `reload` action.
+  # it should be fixed in the upstream, but patch it for now. the port has
+  # other issues, too and should be fixed by a PR.
   patch:
     src: files/FreeBSD.reload.patch
     dest: /usr/local/etc/rc.d/fluentd
