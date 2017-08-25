@@ -22,7 +22,7 @@ fluentd_ca_cert:
 fluentd_ca_private_key_passphrase: ""
 fluentd_buffer_path: /var/spool/fluentd
 fluentd_unix_pipe_dir: "{{ __fluentd_unix_pipe_dir }}"
-fluentd_log_dir: /var/log/fluentd
-fluentd_log_file: "{{ fluentd_log_dir }}/fluentd.log"
+fluentd_log_dir: "/var/log/{{ fluentd_service_name }}"
+fluentd_log_file: "{{ fluentd_log_dir }}/{{ fluentd_service_name }}.log"
 fluentd_pid_dir: "{{ __fluentd_pid_dir }}"
 fluentd_pid_file: "{{ __fluentd_pid_file }}"

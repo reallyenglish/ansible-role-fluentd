@@ -150,7 +150,7 @@ below. The role creates a configuration fragment of `config` under
 
 # Dependencies
 
-- reallyenglish.language-ruby (OpenBSD only)
+- reallyenglish.language-ruby (OpenBSD, Ubuntu, and RedHat)
 
 # Example Playbook
 

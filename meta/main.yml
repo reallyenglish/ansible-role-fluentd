@@ -25,4 +25,4 @@ galaxy_info:
     - logging
 dependencies:
   - role: reallyenglish.language-ruby
-    when: ansible_os_family == 'OpenBSD'
+    when: ansible_os_family == 'OpenBSD' or ansible_os_family == 'Debian' or ansible_os_family == 'RedHat'

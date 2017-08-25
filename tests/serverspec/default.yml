@@ -3,7 +3,7 @@
     - ansible-role-fluentd
   vars:
     fluentd_extra_groups: tty,bin
-    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
     fluentd_system_config: |
       log_level debug
       suppress_config_dump
@@ -88,4 +88,3 @@
 
             @type null
           </match>
-    language_ruby_package: ruby-2.3.1p1 # N/A except OpenBSD
