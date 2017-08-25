@@ -17,6 +17,7 @@ fluentd_log_file     = "/var/log/fluentd/fluentd.log"
 default_user         = "root"
 default_group        = "root"
 pid_dir_mode         = 755
+extra_groups         = ["tty", "bin"]
 
 case os[:family]
 when "freebsd"
@@ -70,6 +71,12 @@ if os[:family] == "openbsd"
 else
   describe package(fluentd_package_name) do
     it { should be_installed }
+  end
+end
+
+describe user(fluentd_user_name) do
+  extra_groups.each do |g|
+    it { should belong_to_group g }
   end
 end
 
