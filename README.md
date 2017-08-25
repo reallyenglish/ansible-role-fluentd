@@ -170,6 +170,7 @@ below. The role creates a configuration fragment of `config` under
     fluentd_plugins_to_create:
       - name: example.rb
         content: "{{ lookup('file', 'files/example.rb') }}"
+        state: present
     fluentd_ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV
