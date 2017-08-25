@@ -180,7 +180,7 @@ when "freebsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(%r{^fluentd_flags="-p #{Regexp.escape(fluentd_plugin_dir)} --log #{Regexp.escape(fluentd_log_file)}"$}) }
+    its(:content) { should match(/^fluentd_flags="-p #{Regexp.escape(fluentd_plugin_dir)} --log #{Regexp.escape(fluentd_log_file)}"$/) }
   end
 end
 
