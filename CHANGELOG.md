@@ -1,3 +1,7 @@
+## Release 1.4.0
+
+* ef6b8c8 [feature] introduce fluentd_extra_groups (#48)
+
 ## Release 1.3.0
 
 * 35c0b41 [feature][bugfix] support reloading fluentd (#45)
