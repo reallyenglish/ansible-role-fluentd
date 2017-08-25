@@ -17,7 +17,7 @@ fluentd_log_file     = "/var/log/fluentd/fluentd.log"
 default_user         = "root"
 default_group        = "root"
 pid_dir_mode         = 755
-extra_groups         = ["tty", "bin"]
+extra_groups         = %w(tty bin)
 
 case os[:family]
 when "freebsd"
