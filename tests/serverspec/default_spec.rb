@@ -286,5 +286,7 @@ describe file(fluentd_log_file) do
   it { should be_owned_by fluentd_user_name }
   it { should be_grouped_into fluentd_user_group }
   it { should be_mode 644 }
+  # XXX make sure the `reload` issue has been fixed
+  # https://github.com/reallyenglish/ansible-role-fluentd/issues/44
   its(:content) { should match(/fluentd supervisor process get SIGHUP/) }
 end
