@@ -5,9 +5,9 @@
   service:
     name: "{{ fluentd_service_name }}"
     state: restarted
-  notify: Wait 3 seconds (restart)
+  notify: Wait 5 seconds (restart)
 
-- name: Wait 3 seconds (restart)
+- name: Wait 5 seconds (restart)
   # XXX insert delay between handlers.
   # there is a race in fluentd's signal handling. the following commands
   # reproduce the issue. the expected result is the service is restarted and
@@ -35,14 +35,14 @@
   # "Handlers are run in the order they are listed, not in the order that they
   # are notified."
   pause:
-    seconds: 3
+    seconds: 5
 
 - name: Reload fluentd
   service:
     name: "{{ fluentd_service_name }}"
     state: reloaded
-  notify: Wait 3 seconds (reload)
+  notify: Wait 5 seconds (reload)
 
-- name: Wait 3 seconds (reload)
+- name: Wait 5 seconds (reload)
   pause:
-    seconds: 3
+    seconds: 5
