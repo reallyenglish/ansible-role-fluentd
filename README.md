@@ -48,8 +48,8 @@ None
 | `fluentd_ca_private_key_passphrase` | the passphrase of `ca_key.pem` | "" |
 | `fluentd_buffer_path`         | path to file-based buffer directory | `/var/spool/fluentd` |
 | `fluentd_unix_pipe_dir`       | path to directory where `AF_UNIX` pipe should be created | `{{ __fluentd_unix_pipe_dir }}` |
-| `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/fluentd` |
-| `fluentd_log_file` | path to log file | `{{ fluentd_log_dir }}/fluentd.log` |
+| `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/{{ fluentd_service_name }}` |
+| `fluentd_log_file` | path to log file | `{{ fluentd_log_dir }}/{{ fluentd_service_name }}.log` |
 | `fluentd_system_config`       | a string that is enclosed by `<system>` tag in `fluentd.conf`. use `|` in yaml to set multiple lines of system-wide configurations | `log_level error` |
 | `fluentd_pid_dir` | path to PID directory | `"{{ __fluentd_pid_dir }}"` |
 | `fluentd_pid_file` | path to PID file | `"{{ __fluentd_pid_file }}"` |
@@ -160,7 +160,7 @@ below. The role creates a configuration fragment of `config` under
     - ansible-role-fluentd
   vars:
     fluentd_extra_groups: tty,bin
-    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
     fluentd_system_config: |
       log_level debug
       suppress_config_dump
@@ -245,7 +245,6 @@ below. The role creates a configuration fragment of `config` under
 
             @type null
           </match>
-    language_ruby_package: ruby-2.3.1p1 # N/A except OpenBSD
 ```
 
 # License
