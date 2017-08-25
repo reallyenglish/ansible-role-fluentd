@@ -11,9 +11,8 @@
   user:
     name: "{{ fluentd_user }}"
     append: yes
-    groups: "{{ item }}"
+    groups: "{{ fluentd_extra_groups }}"
     state: present
-  with_items: "{{ fluentd_extra_groups }}"
 
 - name: Create plugin directory
   file:
