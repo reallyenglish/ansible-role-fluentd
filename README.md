@@ -30,6 +30,7 @@ None
 |----------|-------------|---------|
 | `fluentd_user`                | the user of `fluentd` | `{{ __fluentd_user }}` |
 | `fluentd_group`               | the group of `fluentd` | `{{ __fluentd_group }}` |
+| `fluentd_extra_groups` | list of extra group names (preferred) or a comma-separated string of group names (deprecated, for backward-compatibility) that `fluentd` user belongs to | `[]` |
 | `fluentd_package_name`        | package name of `fluentd` | `{{ __fluentd_package_name }}` |
 | `fluentd_config_dir`          | path to config directory | `{{ __fluentd_config_dir }}` |
 | `fluentd_config_file`         | path to `fluent.conf` | `{{ __fluentd_config_file }}` |
@@ -135,9 +136,10 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
   roles:
     - ansible-role-fluentd
   vars:
-    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %}"
+    fluentd_extra_groups: tty,bin
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
     fluentd_system_config: |
-      log_level error
+      log_level debug
       suppress_config_dump
     fluentd_plugins_to_install:
       - fluent-plugin-redis

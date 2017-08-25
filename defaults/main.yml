@@ -2,6 +2,7 @@
 # defaults file for ansible-role-fluentd
 fluentd_user: "{{ __fluentd_user }}"
 fluentd_group: "{{ __fluentd_group }}"
+fluentd_extra_groups: []
 fluentd_package_name: "{{ __fluentd_package_name }}"
 fluentd_config_dir: "{{ __fluentd_config_dir }}"
 fluentd_config_file: "{{ __fluentd_config_file }}"

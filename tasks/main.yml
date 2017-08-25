@@ -7,6 +7,13 @@
 
 - include: "configure-{{ ansible_os_family }}.yml"
 
+- name: Add fluentd_user to fluentd_extra_groups
+  user:
+    name: "{{ fluentd_user }}"
+    append: yes
+    groups: "{{ fluentd_extra_groups }}"
+    state: present
+
 - name: Create plugin directory
   file:
     path: "{{ fluentd_plugin_dir }}"
