@@ -1,9 +1,9 @@
 require "fluent/input"
 
 module Fluentd
+  # An example fluentd plug-in
   class Example
     Fluent::Plugin.register_input("example", self)
-    config_param :port, :integer, :default => 8888
 
     def configure
       super
