@@ -142,7 +142,7 @@
   template:
     src: fluent.conf.j2
     dest: "{{ fluentd_config_file }}"
-    validate: "{{ fluentd_bin }} --dry-run --config %s"
+    validate: "{{ fluentd_bin }} --dry-run {{ fluentd_flags }} --config %s"
   notify: Reload fluentd
 
 - name: Start fluentd
