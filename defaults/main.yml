@@ -13,6 +13,7 @@ fluentd_flags: "{{ __fluentd_flags }}"
 fluentd_bin: "{{ __fluentd_bin }}"
 fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
 fluentd_plugins_to_install: []
+fluentd_plugins_to_create: []
 fluentd_certs_dir: "{{ __fluentd_config_dir }}/certs"
 fluentd_configs: {}
 fluentd_system_config: "log_level error"

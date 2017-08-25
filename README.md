@@ -40,6 +40,7 @@ None
 | `fluentd_flags`               | optional command line flags for the service | `{{ __fluentd_flags }}` |
 | `fluentd_gem_bin`             | path to `fluent-gem`  | `{{ __fluentd_gem_bin }}` |
 | `fluentd_plugins_to_install`  | list of plug-in names to install | `[]` |
+| `fluentd_plugins_to_create`   | list of plug-ins to _create_ (see below) | `[]` |
 | `fluentd_certs_dir`           | path to directory where cert files reside | `{{ __fluentd_config_dir }}/certs` |
 | `fluentd_configs`             | dict of config fragments, see below | {} |
 | `fluentd_ca_key`              | content of `ca_key.pem` | "" |
@@ -56,6 +57,28 @@ None
 Note that although the role provides `fluentd_log_dir` and `fluentd_log_file`,
 you need to configure `fluentd` to log to `fluentd_log_file`. The role does
 _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
+
+## `fluentd_plugins_to_create`
+
+This variable is list of dict. The dict is described below. The role creates
+plug-ins listed in this variable under `fluentd_plugin_dir`.
+
+| Key | Description | Mandatory? |
+|-----|-------------|------------|
+| name | file name of the plug-in | yes |
+| content | content of the plug-in, must be valid ruby code | yes |
+| state | state of the plug-in, either `present` or `absent` | yes |
+
+## `fluentd_configs`
+
+Key is the name of the config fragment file. the key has a hash described
+below. The role creates a configuration fragment of `config` under
+`fluentd_config_fragment_dir`.
+
+| key     | value                                            |
+|---------|--------------------------------------------------|
+| enabled | bool, create the config if true, remove if false |
+| config  | the configuration                                |
 
 ## Debian
 
@@ -144,6 +167,9 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
     fluentd_plugins_to_install:
       - fluent-plugin-redis
       - fluent-plugin-secure-forward
+    fluentd_plugins_to_create:
+      - name: example.rb
+        content: "{{ lookup('file', 'files/example.rb') }}"
     fluentd_ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV
@@ -197,6 +223,12 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
       ZGq87OydiIkk0pZxdabkpGxpbkKiIwK2+zFWDu3x604pR4b+rAMgrpEseD6TjLgr
       -----END RSA PRIVATE KEY-----
     fluentd_configs:
+      example_input:
+        enabled: true
+        config: |
+          <soruce>
+            @type example
+          </soruce>
       listen_on_5140:
         enabled: true
         config: |
@@ -214,17 +246,6 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
           </match>
     language_ruby_package: ruby-2.3.1p1 # N/A except OpenBSD
 ```
-
-## fluentd\_configs
-
-Key is the name of the config fragment file. the key has a hash described
-below. The role creates a configuration fragment of `config` under
-`fluentd_config_fragment_dir`.
-
-| key     | value                                            |
-|---------|--------------------------------------------------|
-| enabled | bool, create the config if true, remove if false |
-| config  | the configuration                                |
 
 # License
 

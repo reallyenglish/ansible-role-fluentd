@@ -93,6 +93,15 @@ describe file(fluentd_plugin_dir) do
   it { should be_mode 755 }
 end
 
+describe file("#{fluentd_plugin_dir}/example.rb") do
+  it { should exist }
+  it { should be_mode 644 }
+  it { should be_file }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(/^\s+#{Regexp.escape('Fluent::Plugin.register_input("example", self)')}$/) }
+end
+
 describe file(fluentd_log_dir) do
   it { should be_directory }
   it { should be_mode 755 }

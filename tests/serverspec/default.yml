@@ -10,6 +10,10 @@
     fluentd_plugins_to_install:
       - fluent-plugin-redis
       - fluent-plugin-secure-forward
+    fluentd_plugins_to_create:
+      - name: example.rb
+        content: "{{ lookup('file', 'files/example.rb') }}"
+        state: present
     fluentd_ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV
@@ -63,6 +67,12 @@
       ZGq87OydiIkk0pZxdabkpGxpbkKiIwK2+zFWDu3x604pR4b+rAMgrpEseD6TjLgr
       -----END RSA PRIVATE KEY-----
     fluentd_configs:
+      example_input:
+        enabled: true
+        config: |
+          <soruce>
+            @type example
+          </soruce>
       listen_on_5140:
         enabled: true
         config: |
