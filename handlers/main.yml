@@ -26,7 +26,7 @@
   # XXX two "Wait" handlers must be defined because ansible aggregates multiple
   # calls to a hanlder into one
   #
-  # XXX listed order of these handlers does matter. "Wait 3 seconds (restart)"
+  # XXX listed order of these handlers does matter. "Wait 5 seconds (restart)"
   # must be defined before "Reload fluentd" handler. otherwise, the former is
   # executed *after* "Reload fluentd" handler, which is not what we wanted. the
   # wait handlers are supposed to be executed between "Restart" and "Reload"
