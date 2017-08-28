@@ -1,4 +1,3 @@
 ---
 
 - name: reallyenglish.language-ruby
-  src: https://github.com/reallyenglish/ansible-role-language-ruby/archive/remove_fixed_version.tar.gz
