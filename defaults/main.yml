@@ -13,6 +13,7 @@ fluentd_flags: "{{ __fluentd_flags }}"
 fluentd_bin: "{{ __fluentd_bin }}"
 fluentd_gem_bin: "{{ __fluentd_gem_bin }}"
 fluentd_plugins_to_install: []
+fluentd_plugins_to_create: []
 fluentd_certs_dir: "{{ __fluentd_config_dir }}/certs"
 fluentd_configs: {}
 fluentd_system_config: "log_level error"
@@ -21,7 +22,7 @@ fluentd_ca_cert:
 fluentd_ca_private_key_passphrase: ""
 fluentd_buffer_path: /var/spool/fluentd
 fluentd_unix_pipe_dir: "{{ __fluentd_unix_pipe_dir }}"
-fluentd_log_dir: /var/log/fluentd
-fluentd_log_file: "{{ fluentd_log_dir }}/fluentd.log"
+fluentd_log_dir: "/var/log/{{ fluentd_service_name }}"
+fluentd_log_file: "{{ fluentd_log_dir }}/{{ fluentd_service_name }}.log"
 fluentd_pid_dir: "{{ __fluentd_pid_dir }}"
 fluentd_pid_file: "{{ __fluentd_pid_file }}"

@@ -12,8 +12,8 @@ fluentd_gem_bin      = "/usr/sbin/td-agent-gem"
 fluentd_certs_dir    = "/etc/td-agent/certs"
 fluentd_buffer_dir   = "/var/spool/fluentd"
 fluentd_unix_pipe_dir = "/var/tmp/fluentd"
-fluentd_log_dir      = "/var/log/fluentd"
-fluentd_log_file     = "/var/log/fluentd/fluentd.log"
+fluentd_log_dir      = "/var/log/td-agent"
+fluentd_log_file     = "#{fluentd_log_dir}/td-agent.log"
 default_user         = "root"
 default_group        = "root"
 pid_dir_mode         = 755
@@ -32,6 +32,8 @@ when "freebsd"
   fluentd_certs_dir    = "/usr/local/etc/fluentd/certs"
   default_group        = "wheel"
   pid_dir_mode         = 775
+  fluentd_log_dir      = "/var/log/fluentd"
+  fluentd_log_file     = "#{fluentd_log_dir}/fluentd.log"
 when "openbsd"
   fluentd_user_name     = "_fluentd"
   fluentd_user_group    = "_fluentd"
@@ -43,6 +45,8 @@ when "openbsd"
   fluentd_gem_bin       = "/usr/local/bin/fluent-gem"
   fluentd_certs_dir     = "#{fluentd_conf_dir}/certs"
   default_group         = "wheel"
+  fluentd_log_dir      = "/var/log/fluentd"
+  fluentd_log_file     = "#{fluentd_log_dir}/fluentd.log"
 end
 fluentd_plugin_dir = "#{fluentd_conf_dir}/plugin"
 pid_dir = "/var/run/#{fluentd_service_name}"
@@ -93,6 +97,15 @@ describe file(fluentd_plugin_dir) do
   it { should be_mode 755 }
 end
 
+describe file("#{fluentd_plugin_dir}/example.rb") do
+  it { should exist }
+  it { should be_mode 644 }
+  it { should be_file }
+  it { should be_owned_by default_user }
+  it { should be_grouped_into default_group }
+  its(:content) { should match(/^\s+#{Regexp.escape('Fluent::Plugin.register_input("example", self)')}$/) }
+end
+
 describe file(fluentd_log_dir) do
   it { should be_directory }
   it { should be_mode 755 }
@@ -107,7 +120,7 @@ when "openbsd"
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
     it { should be_mode 644 }
-    its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin --log /var/log/fluentd/fluentd.log")}/) }
+    its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon #{pid_file} --config #{fluentd_config_path} -p #{fluentd_plugin_dir} --log #{fluentd_log_file}")}/) }
   end
   fluentd_binary = %w(
     fluent-binlog-reader
@@ -144,7 +157,7 @@ when "redhat"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^TD_AGENT_OPTIONS=" --log #{Regexp.escape("/var/log/fluentd/fluentd.log")}"$/) }
+    its(:content) { should match(/^TD_AGENT_OPTIONS=" --log #{Regexp.escape(fluentd_log_file)}"$/) }
   end
 when "ubuntu"
   describe file("/etc/default/td-agent") do
@@ -152,7 +165,7 @@ when "ubuntu"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(/^TD_AGENT_OPTIONS=" --log #{Regexp.escape("/var/log/fluentd/fluentd.log")}"$/) }
+    its(:content) { should match(/^TD_AGENT_OPTIONS="-p #{Regexp.escape(fluentd_plugin_dir)} --log #{Regexp.escape(fluentd_log_file)}"$/) }
   end
 when "freebsd"
   describe file("/etc/rc.conf.d") do
@@ -167,7 +180,7 @@ when "freebsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
-    its(:content) { should match(%r{^fluentd_flags="-p /usr/local/etc/fluentd/plugin --log /var/log/fluentd/fluentd.log"$}) }
+    its(:content) { should match(/^fluentd_flags="-p #{Regexp.escape(fluentd_plugin_dir)} --log #{Regexp.escape(fluentd_log_file)}"$/) }
   end
 end
 
@@ -273,5 +286,7 @@ describe file(fluentd_log_file) do
   it { should be_owned_by fluentd_user_name }
   it { should be_grouped_into fluentd_user_group }
   it { should be_mode 644 }
+  # XXX make sure the `reload` issue has been fixed
+  # https://github.com/reallyenglish/ansible-role-fluentd/issues/44
   its(:content) { should match(/fluentd supervisor process get SIGHUP/) }
 end

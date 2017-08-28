@@ -40,6 +40,7 @@ None
 | `fluentd_flags`               | optional command line flags for the service | `{{ __fluentd_flags }}` |
 | `fluentd_gem_bin`             | path to `fluent-gem`  | `{{ __fluentd_gem_bin }}` |
 | `fluentd_plugins_to_install`  | list of plug-in names to install | `[]` |
+| `fluentd_plugins_to_create`   | list of plug-ins to _create_ (see below) | `[]` |
 | `fluentd_certs_dir`           | path to directory where cert files reside | `{{ __fluentd_config_dir }}/certs` |
 | `fluentd_configs`             | dict of config fragments, see below | {} |
 | `fluentd_ca_key`              | content of `ca_key.pem` | "" |
@@ -47,8 +48,8 @@ None
 | `fluentd_ca_private_key_passphrase` | the passphrase of `ca_key.pem` | "" |
 | `fluentd_buffer_path`         | path to file-based buffer directory | `/var/spool/fluentd` |
 | `fluentd_unix_pipe_dir`       | path to directory where `AF_UNIX` pipe should be created | `{{ __fluentd_unix_pipe_dir }}` |
-| `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/fluentd` |
-| `fluentd_log_file` | path to log file | `{{ fluentd_log_dir }}/fluentd.log` |
+| `fluentd_log_dir`             | path to directory where `fluentd` *can* write logs. Set `None` to disable | `/var/log/{{ fluentd_service_name }}` |
+| `fluentd_log_file` | path to log file | `{{ fluentd_log_dir }}/{{ fluentd_service_name }}.log` |
 | `fluentd_system_config`       | a string that is enclosed by `<system>` tag in `fluentd.conf`. use `|` in yaml to set multiple lines of system-wide configurations | `log_level error` |
 | `fluentd_pid_dir` | path to PID directory | `"{{ __fluentd_pid_dir }}"` |
 | `fluentd_pid_file` | path to PID file | `"{{ __fluentd_pid_file }}"` |
@@ -56,6 +57,28 @@ None
 Note that although the role provides `fluentd_log_dir` and `fluentd_log_file`,
 you need to configure `fluentd` to log to `fluentd_log_file`. The role does
 _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
+
+## `fluentd_plugins_to_create`
+
+This variable is list of dict. The dict is described below. The role creates
+plug-ins listed in this variable under `fluentd_plugin_dir`.
+
+| Key | Description | Mandatory? |
+|-----|-------------|------------|
+| name | file name of the plug-in | yes |
+| content | content of the plug-in, must be valid ruby code | yes |
+| state | state of the plug-in, either `present` or `absent` | yes |
+
+## `fluentd_configs`
+
+Key is the name of the config fragment file. the key has a hash described
+below. The role creates a configuration fragment of `config` under
+`fluentd_config_fragment_dir`.
+
+| key     | value                                            |
+|---------|--------------------------------------------------|
+| enabled | bool, create the config if true, remove if false |
+| config  | the configuration                                |
 
 ## Debian
 
@@ -127,7 +150,7 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
 
 # Dependencies
 
-- reallyenglish.language-ruby (OpenBSD only)
+- reallyenglish.language-ruby (OpenBSD, Ubuntu, and RedHat)
 
 # Example Playbook
 
@@ -137,13 +160,17 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
     - ansible-role-fluentd
   vars:
     fluentd_extra_groups: tty,bin
-    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
+    fluentd_flags: "{% if ansible_os_family == 'FreeBSD' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'Debian' %}-p {{ fluentd_plugin_dir }}{% elif ansible_os_family == 'RedHat' %}{% elif ansible_os_family == 'OpenBSD' %}--daemon /var/run/fluentd/fluentd.pid --config /etc/fluentd/fluent.conf -p /etc/fluentd/plugin{% endif %} --log {{ fluentd_log_file }}"
     fluentd_system_config: |
       log_level debug
       suppress_config_dump
     fluentd_plugins_to_install:
       - fluent-plugin-redis
       - fluent-plugin-secure-forward
+    fluentd_plugins_to_create:
+      - name: example.rb
+        content: "{{ lookup('file', 'files/example.rb') }}"
+        state: present
     fluentd_ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIDIDCCAggCAQEwDQYJKoZIhvcNAQEFBQAwTTELMAkGA1UEBhMCVVMxCzAJBgNV
@@ -197,6 +224,12 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
       ZGq87OydiIkk0pZxdabkpGxpbkKiIwK2+zFWDu3x604pR4b+rAMgrpEseD6TjLgr
       -----END RSA PRIVATE KEY-----
     fluentd_configs:
+      example_input:
+        enabled: true
+        config: |
+          <soruce>
+            @type example
+          </soruce>
       listen_on_5140:
         enabled: true
         config: |
@@ -212,19 +245,7 @@ _NOT_ configures `fluentd` to log to the file. See Example Playbook for how.
 
             @type null
           </match>
-    language_ruby_package: ruby-2.3.1p1 # N/A except OpenBSD
 ```
-
-## fluentd\_configs
-
-Key is the name of the config fragment file. the key has a hash described
-below. The role creates a configuration fragment of `config` under
-`fluentd_config_fragment_dir`.
-
-| key     | value                                            |
-|---------|--------------------------------------------------|
-| enabled | bool, create the config if true, remove if false |
-| config  | the configuration                                |
 
 # License
 

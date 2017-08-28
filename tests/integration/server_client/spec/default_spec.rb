@@ -24,14 +24,12 @@ end
 
 context "after client sends message" do
   describe server(:server) do
-    it "receives digest1" do
-      sleep 10
+    it "receives digest1", retry: 6, retry_wait: 10 do
       result = current_server.ssh_exec("grep #{digest1} /tmp/fluentd.log.*")
       expect(result).to match(/#{ digest1 }/)
     end
 
-    it "receives digest2" do
-      sleep 30
+    it "receives digest2", retry: 12, retry_wait: 10 do
       result = current_server.ssh_exec("grep #{digest2} /tmp/fluentd.log.*")
       expect(result).to match(/#{ digest2 }/)
     end

@@ -13,6 +13,8 @@
     append: yes
     groups: "{{ fluentd_extra_groups }}"
     state: present
+  when:
+    - (fluentd_extra_groups is sequence and fluentd_extra_groups | length > 0) or (fluentd_extra_groups is string and fluentd_extra_groups | length > 0)
 
 - name: Create plugin directory
   file:
@@ -118,6 +120,27 @@
   when: not ( gem_list.stdout | search(item) )
   notify: Restart fluentd
 
+- assert:
+    that:
+      - item.state == 'present' or item.state == 'absent'
+  with_items: "{{ fluentd_plugins_to_create }}"
+
+- name: Create local fluent plugins
+  template:
+    src: plugin.rb.j2
+    dest: "{{ fluentd_plugin_dir }}/{{ item.name }}"
+    mode: 0644
+    validate: ruby -c %s
+  with_items: "{{ fluentd_plugins_to_create }}"
+  when: item.state == 'present'
+
+- name: Remove local fluent plugins
+  file:
+    path: "{{ fluentd_plugin_dir }}/{{ item.name }}"
+    state: absent
+  with_items: "{{ fluentd_plugins_to_create }}"
+  when: item.state == 'absent'
+
 - name: Create config fragments
   template:
     src: fragment.conf.j2
@@ -142,7 +165,9 @@
   template:
     src: fluent.conf.j2
     dest: "{{ fluentd_config_file }}"
-    validate: "{{ fluentd_bin }} --dry-run --config %s"
+    # XXX `--log /dev/null` prevents the validate command from poluting log
+    # file and messing log file permission
+    validate: "{{ fluentd_bin }} --dry-run {{ fluentd_flags }} --log /dev/null --config %s"
   notify: Reload fluentd
 
 - name: Start fluentd

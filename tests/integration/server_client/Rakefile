@@ -54,8 +54,9 @@ task :prepare_role do
   tmpfile = Tempfile.new(".tarignore")
   tmpfile.write ignore.join("\n")
   tmpfile.close
-  sh "tar -c -X #{tmpfile.path} -C #{role_dir.parent} -f - #{role_name} | "
-  + "tar -x -C #{test_dir}/roles -f -"
+  # rubocop:disable Metrics/LineLength
+  sh "tar -c -X #{tmpfile.path} -C #{role_dir.parent} -f - #{role_name} | tar -x -C #{test_dir}/roles -f -"
+  # rubocop:enable Metrics/LineLength
 end
 
 desc "vagrant up"
