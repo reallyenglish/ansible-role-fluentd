@@ -13,6 +13,8 @@
     append: yes
     groups: "{{ fluentd_extra_groups }}"
     state: present
+  when:
+    - (fluentd_extra_groups is sequence and fluentd_extra_groups | length > 0) or (fluentd_extra_groups is string and fluentd_extra_groups | length > 0)
 
 - name: Create plugin directory
   file:
