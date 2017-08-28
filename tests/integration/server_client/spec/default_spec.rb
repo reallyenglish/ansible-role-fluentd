@@ -29,7 +29,7 @@ context "after client sends message" do
       expect(result).to match(/#{ digest1 }/)
     end
 
-    it "receives digest2", retry: 6, retry_wait: 10 do
+    it "receives digest2", retry: 12, retry_wait: 10 do
       result = current_server.ssh_exec("grep #{digest2} /tmp/fluentd.log.*")
       expect(result).to match(/#{ digest2 }/)
     end
