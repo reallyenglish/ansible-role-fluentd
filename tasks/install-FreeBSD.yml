@@ -4,7 +4,6 @@
   pkgng:
     name: rubygem-fluentd
     state: present
-  register: register_fluentd_rubygem_fluentd
 
 - name: Patch rc.d script
   # XXX patch rc.d script so that it supports `reload` action.
@@ -13,8 +12,6 @@
   patch:
     src: files/FreeBSD.reload.patch
     dest: /usr/local/etc/rc.d/fluentd
-  when:
-    - register_fluentd_rubygem_fluentd.changed
 
 - name: Install missing gems
   gem:
