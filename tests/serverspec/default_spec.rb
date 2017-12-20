@@ -17,7 +17,7 @@ fluentd_log_file     = "#{fluentd_log_dir}/td-agent.log"
 default_user         = "root"
 default_group        = "root"
 pid_dir_mode         = 755
-extra_groups         = %w(tty bin)
+extra_groups         = %w[tty bin]
 
 case os[:family]
 when "freebsd"
@@ -122,7 +122,7 @@ when "openbsd"
     it { should be_mode 644 }
     its(:content) { should match(/^#{Regexp.escape("fluentd_flags=--daemon #{pid_file} --config #{fluentd_config_path} -p #{fluentd_plugin_dir} --log #{fluentd_log_file}")}/) }
   end
-  fluentd_binary = %w(
+  fluentd_binary = %w[
     fluent-binlog-reader
     fluent-cat
     fluent-debug
@@ -130,7 +130,7 @@ when "openbsd"
     fluent-plugin-config-format
     fluent-plugin-generate
     fluentd
-  )
+  ]
   fluentd_binary.each do |bin|
     describe file("/usr/local/bin/#{bin}") do
       it { should be_symlink }

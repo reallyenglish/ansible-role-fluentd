@@ -44,10 +44,10 @@ script:
   - rvm use 2.1.10
 
   # download the QA scripts
-  - git clone https://github.com/trombik/qansible.git
+  - git clone https://github.com/reallyenglish/qansible.git
 
-  # checkout the latest release
-  - ( cd qansible && git checkout $(git describe --tags $(git rev-list --tags --max-count=1)) )
+  # checkout the reallyengnlish-master branch
+  - ( cd qansible && git checkout reallyenglish-master )
 
   # install it
   - ( cd qansible && bundle install --path vendor/bundle --with "test" && bundle exec rake build && gem install pkg/*.gem )
