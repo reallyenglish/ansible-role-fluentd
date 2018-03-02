@@ -227,7 +227,7 @@ below. The role creates a configuration fragment of `config` under
       example_input:
         enabled: true
         config: |
-          <soruce>
+          <source>
             @type example
           </soruce>
       listen_on_5140:
